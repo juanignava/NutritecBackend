@@ -1,2 +1,2 @@
 # NutritecBackend
-Repository for the Nutrtec app backend
+Repository for the Nutritec app backend
