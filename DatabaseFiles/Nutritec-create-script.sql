@@ -17,8 +17,8 @@ CREATE TABLE NUTRITIONIST
 	BirthDate			DATE,
 	Password			VARCHAR(200) NOT NULL,		-- encrypted password
 	ChargeType			VARCHAR(100) NOT NULL,	
-	Weight				INT,						-- weight in kg	
-	Height				INT,						-- height in m
+	Weight				FLOAT(2),						-- weight in kg	
+	Height				FLOAT(2),						-- height in m
 	CreditCardNumber	INT,
 	Country				VARCHAR(100),
 	Province			VARCHAR(100),
@@ -40,7 +40,7 @@ CREATE TABLE PATIENT
 	LastName2			VARCHAR(100) NOT NULL,
 	BirthDate			DATE,
 	Passowrd			VARCHAR(100) NOT NULL,
-	NutritionistEmail	VARCHAR(100) NOT NULL,
+	NutritionistEmail	VARCHAR(100),
 
 	PRIMARY KEY (Email),
 	UNIQUE (Username)
@@ -54,13 +54,13 @@ CREATE TABLE PRODUCT
 	Aprroved			BIT NOT NULL,
 	Name				VARCHAR(100) NOT NULL, 
 	Description			VARCHAR(300),
-	Sodium				INT NOT NULL,				-- mg/serving
-	Carbohydrates		INT NOT NULL,				-- g/serving
-	Protein				INT NOT NULL,				-- g/serving
-	Fat					INT NOT NULL,				-- g/serving
-	Iron				INT NOT NULL,				-- mg/serving
-	Calcium				INT NOT NULL,				-- mg/serving
-	Calories			INT NOT NULL,				-- amount/serving
+	Sodium				FLOAT(2) NOT NULL,				-- mg/serving
+	Carbohydrates		FLOAT(2) NOT NULL,				-- g/serving
+	Protein				FLOAT(2) NOT NULL,				-- g/serving
+	Fat					FLOAT(2) NOT NULL,				-- g/serving
+	Iron				FLOAT(2) NOT NULL,				-- mg/serving
+	Calcium				FLOAT(2) NOT NULL,				-- mg/serving
+	Calories			FLOAT(2) NOT NULL,				-- amount/serving
 	
 	PRIMARY KEY (Barcode)
 );
@@ -83,13 +83,13 @@ CREATE TABLE MEASUREMENT
 	Number				INT NOT NULL,
 	Date				DATE NOT NULL,
 	PatientEmail		VARCHAR(100) NOT NULL,
-	Height				INT,						-- in m
-	Weight				INT,						-- in kg
-	Hips				INT,						-- in cm
-	Waist				INT,						-- in cm
-	Neck				INT,						-- in cm
-	FatPercentage		INT CHECK(FatPercentage > 0 AND FatPercentage < 100),
-	MusclePercentage	INT CHECK(MusclePercentage > 0 AND MusclePercentage < 100),
+	Height				FLOAT(2),						-- in m
+	Weight				FLOAT(2),						-- in kg
+	Hips				FLOAT(2),						-- in cm
+	Waist				FLOAT(2),						-- in cm
+	Neck				FLOAT(2),						-- in cm
+	FatPercentage		FLOAT(2) CHECK(FatPercentage > 0 AND FatPercentage < 100),
+	MusclePercentage	FLOAT(2) CHECK(MusclePercentage > 0 AND MusclePercentage < 100),
 
 	PRIMARY KEY (PatientEmail, Number)
 );
@@ -156,8 +156,9 @@ CREATE TABLE CONSUMES_PRODUCT
 	PatientEmail		VARCHAR(100) NOT NULL,
 	Day					VARCHAR(100) NOT NULL,
 	Meal				VARCHAR(100) NOT NULL,
+	Servings			INT NOT NULL,
 
-	PRIMARY KEY (ProductBarcode, PatientEmail)
+	PRIMARY KEY (ProductBarcode, PatientEmail, Day, Meal)
 );
 
 -- Table #12 Consumes_recipe --
@@ -169,7 +170,7 @@ CREATE TABLE CONSUMES_RECIPE
 	Day					VARCHAR(100) NOT NULL,
 	Meal				VARCHAR(100) NOT NULL,
 
-	PRIMARY KEY (RecipeNumber, PatientEmail)
+	PRIMARY KEY (RecipeNumber, PatientEmail, Day, Meal)
 );
 
 -- Table #13 Recipe_has --
