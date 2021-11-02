@@ -10,13 +10,13 @@ namespace Nutritec.Models
         public int Number { get; set; }
         public DateTime Date { get; set; }
         public string PatientEmail { get; set; }
-        public int? Height { get; set; }
-        public int? Weight { get; set; }
-        public int? Hips { get; set; }
-        public int? Waist { get; set; }
-        public int? Neck { get; set; }
-        public int? FatPercentage { get; set; }
-        public int? MusclePercentage { get; set; }
+        public float? Height { get; set; }
+        public float? Weight { get; set; }
+        public float? Hips { get; set; }
+        public float? Waist { get; set; }
+        public float? Neck { get; set; }
+        public float? FatPercentage { get; set; }
+        public float? MusclePercentage { get; set; }
 
         public virtual Patient PatientEmailNavigation { get; set; }
     }

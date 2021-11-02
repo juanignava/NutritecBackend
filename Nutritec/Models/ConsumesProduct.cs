@@ -11,6 +11,7 @@ namespace Nutritec.Models
         public string PatientEmail { get; set; }
         public string Day { get; set; }
         public string Meal { get; set; }
+        public int Servings { get; set; }
 
         public virtual Patient PatientEmailNavigation { get; set; }
         public virtual Product ProductBarcodeNavigation { get; set; }

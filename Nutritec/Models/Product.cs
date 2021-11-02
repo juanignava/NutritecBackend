@@ -16,16 +16,16 @@ namespace Nutritec.Models
         }
 
         public int Barcode { get; set; }
-        public bool Aprroved { get; set; }
+        public int Aprroved { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public int Sodium { get; set; }
-        public int Carbohydrates { get; set; }
-        public int Protein { get; set; }
-        public int Fat { get; set; }
-        public int Iron { get; set; }
-        public int Calcium { get; set; }
-        public int Calories { get; set; }
+        public float Sodium { get; set; }
+        public float Carbohydrates { get; set; }
+        public float Protein { get; set; }
+        public float Fat { get; set; }
+        public float Iron { get; set; }
+        public float Calcium { get; set; }
+        public float Calories { get; set; }
 
         public virtual ICollection<ConsumesProduct> ConsumesProducts { get; set; }
         public virtual ICollection<HasVitamin> HasVitamins { get; set; }

@@ -10,12 +10,12 @@ CREATE TABLE NUTRITIONIST
 	Username			VARCHAR(100) NOT NULL,
 	NutritionistCode	INT NOT NULL,
 	Id					INT NOT NULL,
-	Active				BIT NOT NULL,
+	Active				INT NOT NULL,
 	FirstName			VARCHAR(100) NOT NULL,
 	LastName1			VARCHAR(100) NOT NULL,
 	LastName2			VARCHAR(100),
 	BirthDate			DATE,
-	Password			VARCHAR(200) NOT NULL,		-- encrypted password
+	Password			VARCHAR(200) NOT NULL,			-- encrypted password
 	ChargeType			VARCHAR(100) NOT NULL,	
 	Weight				FLOAT(2),						-- weight in kg	
 	Height				FLOAT(2),						-- height in m
@@ -51,7 +51,7 @@ CREATE TABLE PATIENT
 CREATE TABLE PRODUCT
 (
 	Barcode				INT NOT NULL,
-	Aprroved			BIT NOT NULL,
+	Aprroved			INT NOT NULL,
 	Name				VARCHAR(100) NOT NULL, 
 	Description			VARCHAR(300),
 	Sodium				FLOAT(2) NOT NULL,				-- mg/serving
