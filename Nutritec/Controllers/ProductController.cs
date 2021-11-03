@@ -30,6 +30,28 @@ namespace Nutritec.Controllers
                                                          WHERE Barcode = {barcode}").FirstOrDefaultAsync();
         }
 
+        // Get all products related to a plan number by mealtime
+        [HttpGet("byplan/{planNumber}/{mealtime}")]
+        public async Task<IEnumerable<PlanProductView>> GetProductByPlan(int planNumber, string mealtime)
+        {
+            // Use sql query to search in view
+            return await _context.PlanProductViews.FromSqlRaw($@"SELECT *
+                                                                FROM PLAN_PRODUCT_VIEW
+                                                                WHERE Number = {planNumber} AND Mealtime = '{mealtime}'").ToListAsync();
+
+        }
+
+        // Get all products that are NOT related to a plan number by mealtime
+        [HttpGet("notinplan/{planNumber}/{mealtime}")]
+        public async Task<IEnumerable<PlanProductView>> GetProductNotInPlan(int planNumber, string mealtime)
+        {
+            // Use sql query to search in view
+            return await _context.PlanProductViews.FromSqlRaw($@"SELECT *
+                                                                FROM PLAN_PRODUCT_VIEW
+                                                                WHERE Number != {planNumber} AND Mealtime != '{mealtime}'").ToListAsync();
+
+        }
+
         // Get all products bases on the state (Pending, Approved or Declined)
         [HttpGet("state/{state}")]
         public async Task<IEnumerable<Product>> GetPendingProducts(string state)
@@ -53,6 +75,22 @@ namespace Nutritec.Controllers
 
             return Ok();
         }
+
+        // Create relation between a product and a plan
+        [HttpPost("newproductinplan/{planNumber}/{productBarcode}/{mealtime}/{servings}")]
+        public async Task<ActionResult> AddProductInPlan(int planNumber, int productBarcode, string mealtime, int servings)
+        {
+            // sql insertion
+            await _context.Database.ExecuteSqlInterpolatedAsync($@"INSERT INTO PLAN_HAS
+                        (PlanNumber, ProductBarcode, Mealtime, Servings)
+                VALUES  ({planNumber}, {productBarcode}, {mealtime}, {servings})");
+
+            // save the changes
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
+
 
         // Post a product
         [HttpPost]
