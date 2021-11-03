@@ -31,6 +31,8 @@ namespace Nutritec.Models
         public virtual DbSet<RecipeHa> RecipeHas { get; set; }
         public virtual DbSet<Vitamin> Vitamins { get; set; }
 
+        public virtual DbSet<NutritionistReport> NutritionistReports { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -42,12 +44,14 @@ namespace Nutritec.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<NutritionistReport>().HasNoKey();
+
             modelBuilder.HasAnnotation("Relational:Collation", "Modern_Spanish_CI_AS");
 
             modelBuilder.Entity<ConsumesProduct>(entity =>
             {
                 entity.HasKey(e => new { e.ProductBarcode, e.PatientEmail, e.Day, e.Meal })
-                    .HasName("PK__CONSUMES__A7081866321DE0BB");
+                    .HasName("PK__CONSUMES__A7081866526DDA84");
 
                 entity.ToTable("CONSUMES_PRODUCT");
 
@@ -79,7 +83,7 @@ namespace Nutritec.Models
             modelBuilder.Entity<ConsumesRecipe>(entity =>
             {
                 entity.HasKey(e => new { e.RecipeNumber, e.PatientEmail, e.Day, e.Meal })
-                    .HasName("PK__CONSUMES__BC5A9E1DEEE9A736");
+                    .HasName("PK__CONSUMES__BC5A9E1D69A24D8E");
 
                 entity.ToTable("CONSUMES_RECIPE");
 
@@ -111,7 +115,7 @@ namespace Nutritec.Models
             modelBuilder.Entity<DailyPlan>(entity =>
             {
                 entity.HasKey(e => e.Number)
-                    .HasName("PK__DAILY_PL__78A1A19C00CDB9F0");
+                    .HasName("PK__DAILY_PL__78A1A19C7DE97DDC");
 
                 entity.ToTable("DAILY_PLAN");
 
@@ -137,7 +141,7 @@ namespace Nutritec.Models
             modelBuilder.Entity<Follow>(entity =>
             {
                 entity.HasKey(e => new { e.PatientEmail, e.PlanNumber })
-                    .HasName("PK__FOLLOWS__678069EE2F576F13");
+                    .HasName("PK__FOLLOWS__678069EE45A412B0");
 
                 entity.ToTable("FOLLOWS");
 
@@ -166,7 +170,7 @@ namespace Nutritec.Models
             modelBuilder.Entity<HasVitamin>(entity =>
             {
                 entity.HasKey(e => new { e.ProductBarcode, e.VitaminCode })
-                    .HasName("PK__HAS_VITA__F878CB2520301E58");
+                    .HasName("PK__HAS_VITA__F878CB25240211B0");
 
                 entity.ToTable("HAS_VITAMIN");
 
@@ -190,7 +194,7 @@ namespace Nutritec.Models
             modelBuilder.Entity<Measurement>(entity =>
             {
                 entity.HasKey(e => new { e.PatientEmail, e.Number })
-                    .HasName("PK__MEASUREM__A78C2372E644FB7F");
+                    .HasName("PK__MEASUREM__A78C237213838CE8");
 
                 entity.ToTable("MEASUREMENT");
 
@@ -210,11 +214,11 @@ namespace Nutritec.Models
             modelBuilder.Entity<Nutritionist>(entity =>
             {
                 entity.HasKey(e => e.Email)
-                    .HasName("PK__NUTRITIO__A9D1053557DCBB37");
+                    .HasName("PK__NUTRITIO__A9D105359F4E94CE");
 
                 entity.ToTable("NUTRITIONIST");
 
-                entity.HasIndex(e => new { e.Username, e.NutritionistCode, e.Id, e.CreditCardNumber }, "UQ__NUTRITIO__62CFCAA9978768BE")
+                entity.HasIndex(e => new { e.Username, e.NutritionistCode, e.Id, e.CreditCardNumber }, "UQ__NUTRITIO__62CFCAA9C144E91B")
                     .IsUnique();
 
                 entity.Property(e => e.Email)
@@ -272,11 +276,11 @@ namespace Nutritec.Models
             modelBuilder.Entity<Patient>(entity =>
             {
                 entity.HasKey(e => e.Email)
-                    .HasName("PK__PATIENT__A9D105351D01DE6F");
+                    .HasName("PK__PATIENT__A9D10535248F87AA");
 
                 entity.ToTable("PATIENT");
 
-                entity.HasIndex(e => e.Username, "UQ__PATIENT__536C85E42B62E002")
+                entity.HasIndex(e => e.Username, "UQ__PATIENT__536C85E4CA0DD92E")
                     .IsUnique();
 
                 entity.Property(e => e.Email)
@@ -323,7 +327,7 @@ namespace Nutritec.Models
             modelBuilder.Entity<PlanHa>(entity =>
             {
                 entity.HasKey(e => new { e.PlanNumber, e.ProductBarcode, e.Mealtime })
-                    .HasName("PK__PLAN_HAS__9457BC1A95B053CF");
+                    .HasName("PK__PLAN_HAS__9457BC1A52CCF8D3");
 
                 entity.ToTable("PLAN_HAS");
 
@@ -347,11 +351,16 @@ namespace Nutritec.Models
             modelBuilder.Entity<Product>(entity =>
             {
                 entity.HasKey(e => e.Barcode)
-                    .HasName("PK__PRODUCT__177800D2F0C965EE");
+                    .HasName("PK__PRODUCT__177800D22AC483D7");
 
                 entity.ToTable("PRODUCT");
 
                 entity.Property(e => e.Barcode).ValueGeneratedNever();
+
+                entity.Property(e => e.Approved)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Description)
                     .HasMaxLength(300)
@@ -366,7 +375,7 @@ namespace Nutritec.Models
             modelBuilder.Entity<Recipe>(entity =>
             {
                 entity.HasKey(e => e.Number)
-                    .HasName("PK__RECIPE__78A1A19C2A9C4AC8");
+                    .HasName("PK__RECIPE__78A1A19C2517BD44");
 
                 entity.ToTable("RECIPE");
 
@@ -392,7 +401,7 @@ namespace Nutritec.Models
             modelBuilder.Entity<RecipeHa>(entity =>
             {
                 entity.HasKey(e => new { e.RecipeNumber, e.ProductBarcode })
-                    .HasName("PK__RECIPE_H__029878460EC54928");
+                    .HasName("PK__RECIPE_H__02987846B62A6708");
 
                 entity.ToTable("RECIPE_HAS");
 
@@ -412,7 +421,7 @@ namespace Nutritec.Models
             modelBuilder.Entity<Vitamin>(entity =>
             {
                 entity.HasKey(e => e.Code)
-                    .HasName("PK__VITAMIN__A25C5AA63970C4F7");
+                    .HasName("PK__VITAMIN__A25C5AA6DD6BC99B");
 
                 entity.ToTable("VITAMIN");
 

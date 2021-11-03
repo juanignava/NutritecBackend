@@ -16,7 +16,7 @@ namespace Nutritec.Models
         }
 
         public int Barcode { get; set; }
-        public int Aprroved { get; set; }
+        public string Approved { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public float Sodium { get; set; }

@@ -62,3 +62,23 @@ Url: `/api/Patient`
 }
 ```
 
+
+### (Products)
+
+POST product
+
+```Json
+{
+  "name": "Watermelon",
+  "description": "A unit of this fruit",
+  "sodium": 1,
+  "carbohydrates": 26.9,
+  "protein": 1.29,
+  "fat": 0.39,
+  "iron": 1.5,
+  "calcium": 15,
+  "calories": 105
+}
+```
+
+

@@ -38,6 +38,14 @@ namespace Nutritec.Controllers
 
         */
 
+        // Get nutritionist report by charge type
+        [HttpGet("report/{chargeType}")]
+        public async Task<IEnumerable<NutritionistReport>> GetNutritionistReport(string chargeType)
+        {
+            // Use sql query that uses the store procedure
+            return await _context.NutritionistReports.FromSqlRaw($"EXECUTE uspNutritionistReport {chargeType}").ToListAsync();
+        }
+
         // Get nutritionist password by email or username
         [HttpGet("login/{credential}")]
         public async Task<ActionResult<Nutritionist>> GetNutritionistByCredential(string credential)
@@ -60,7 +68,6 @@ namespace Nutritec.Controllers
         public async Task<ActionResult> Add(Nutritionist nutritionist)
         {
 
-            Console.WriteLine("Beggining the post"); 
 
             // First check there if the nutritionist doesn't exist
             var itemToAdd = await _context.Nutritionists.FromSqlRaw(@$"SELECT * 

@@ -36,15 +36,15 @@ INSERT INTO MEASUREMENT (Number, Date, PatientEmail, Height, Weight, Hips, Waist
 
 
 
-INSERT INTO PRODUCT (Barcode, Aprroved, Name, Description, Sodium, Carbohydrates, Protein, Fat, Iron, Calcium, Calories)
-			VALUES	(1000, 1, 'Rice', 'A serving of white rice salt', 6, 73, 8, 3, 2, 20, 332),
-					(1001, 1, 'Beans', 'A serving black beans', 252, 13.3, 4, 0, 1.6, 28, 71),
-					(1002, 1, 'Banana', 'A unit of this fruit', 1, 26.9, 1.29, 0.39, 1.5, 15, 105),
-					(1003, 1, 'Beef', '100 mg steak without salt', 384, 0, 26.33, 19.5, 2.6, 18, 288),
-					(1004, 0, 'Coffee', 'The drink without milk or sugar', 0, 0.7, 1.19, 0.15, 0, 0, 200),
-					(1005, 1, 'Apple', 'A unit of this fruit', 0.8, 9.1, 0.2, 0.2, 0.1, 6, 52),
-					(1006, 1, 'Bread', '100 mg of normal bread', 0, 52, 7.5, 1.3, 3.6, 260, 210),
-					(1007, 0, 'Honey', '100 g of Bee honey', 4, 76.4, 0.4, 0, 0.4, 6, 288);
+INSERT INTO PRODUCT (Barcode, Approved, Name, Description, Sodium, Carbohydrates, Protein, Fat, Iron, Calcium, Calories)
+			VALUES	(1000, 'Approved', 'Rice', 'A serving of white rice salt', 6, 73, 8, 3, 2, 20, 332),
+					(1001, 'Approved', 'Beans', 'A serving black beans', 252, 13.3, 4, 0, 1.6, 28, 71),
+					(1002, 'Approved', 'Banana', 'A unit of this fruit', 1, 26.9, 1.29, 0.39, 1.5, 15, 105),
+					(1003, 'Approved', 'Beef', '100 mg steak without salt', 384, 0, 26.33, 19.5, 2.6, 18, 288),
+					(1004, 'Pending', 'Coffee', 'The drink without milk or sugar', 0, 0.7, 1.19, 0.15, 0, 0, 200),
+					(1005, 'Approved', 'Apple', 'A unit of this fruit', 0.8, 9.1, 0.2, 0.2, 0.1, 6, 52),
+					(1006, 'Approved', 'Bread', '100 mg of normal bread', 0, 52, 7.5, 1.3, 3.6, 260, 210),
+					(1007, 'Pending', 'Honey', '100 g of Bee honey', 4, 76.4, 0.4, 0, 0.4, 6, 288);
 
 INSERT INTO RECIPE (Number, Name, PatientEmail)
 			VALUES	(1, 'Pinto', 'lu.morales@gmail.com'),
@@ -194,5 +194,3 @@ INSERT INTO CONSUMES_RECIPE (RecipeNumber, PatientEmail, Day, Meal)
 			VALUES	(1, 'lu.morales@gmail.com', 'Tuesday', 'Breakfast'),
 					(1, 'lu.morales@gmail.com', 'Wednesday', 'Lunch'),
 					(1, 'lu.morales@gmail.com', 'Friday', 'Breakfast');
-
-SELECT * FROM CONSUMES_PRODUCT

@@ -1,4 +1,4 @@
--- drop tables
+-- Drop tables --
 
 DROP TABLE IF EXISTS MEASUREMENT;
 DROP TABLE IF EXISTS HAS_VITAMIN;
@@ -13,3 +13,12 @@ DROP TABLE IF EXISTS RECIPE;
 DROP TABLE IF EXISTS PATIENT;
 DROP TABLE IF EXISTS NUTRITIONIST;
 DROP TABLE IF EXISTS PRODUCT;
+
+-- Drop functions --
+
+DROP FUNCTION discount;
+DROP FUNCTION func_getPatients;
+
+-- Drop procedures --
+
+DROP PROCEDURE uspNutritionistReport;
