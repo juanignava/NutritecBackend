@@ -7,12 +7,13 @@ namespace Nutritec.Models
 {
     public class PlanNutritionalValue
     {
-        public float TotalSodium { get; set; }
-        public float TotalCarbohydrates { get; set; }
-        public float TotalProtein { get; set; }
-        public float TotalFat { get; set; }
-        public float TotalIron { get; set; }
-        public float TotalCalcium { get; set; }
-        public float TotalCalories { get; set; }
+        public int Number { get; set; }
+        public double TotalSodium { get; set; }
+        public double TotalCarbohydrates { get; set; }
+        public double TotalProtein { get; set; }
+        public double TotalFat { get; set; }
+        public double TotalIron { get; set; }
+        public double TotalCalcium { get; set; }
+        public double TotalCalories { get; set; }
     }
 }

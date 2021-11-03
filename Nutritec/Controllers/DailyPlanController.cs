@@ -32,10 +32,11 @@ namespace Nutritec.Controllers
 
         // Get nutritional values of the plan
         [HttpGet("nutritionalvalue/{planNumber}")]
-        public async Task<ActionResult<PlanNutritionalValue>> GetNutritionalValues(int planNumber)
+        public async Task<IEnumerable<PlanNutritionalValue>> GetNutritionalValues(int planNumber)
         {
             // Use SQL query to get the nutritional values
-            return await _context.PlanNutritionalValues.FromSqlRaw($"EXECUTE uspPlanDetails {planNumber}").FirstOrDefaultAsync();
+            return await _context.PlanNutritionalValues.FromSqlRaw($"EXECUTE uspPlanDetails {planNumber}").ToListAsync();
+
         }
 
         // Post of a plan with just the name
