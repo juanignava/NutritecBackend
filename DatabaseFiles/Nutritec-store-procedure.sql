@@ -84,3 +84,32 @@ BEGIN
 	WHERE (@type IS NULL OR N.ChargeType = @type);
 
 END
+
+-- procedure #2 --
+
+/*
+Description: This procedure is used to generate the nutritional information
+of the plan
+
+Input: @number corresponds to the number of the plan in analysis
+*/
+
+CREATE PROCEDURE uspPlanDetails(
+	@number INT -- plan number
+)
+AS
+BEGIN
+
+	SELECT
+		ROUND(SUM(P.Sodium*PH.Servings), 2) AS TotalSodium,
+		ROUND(SUM(P.Carbohydrates*PH.Servings), 2) AS TotalCarbohydrates,
+		ROUND(SUM(P.Protein*PH.Servings), 2) AS TotalProtein,
+		ROUND(SUM(P.Fat*PH.Servings), 2) AS TotalFat,
+		ROUND(SUM(P.Iron*PH.Servings), 2) AS TotalIron,
+		ROUND(SUM(P.Calcium*PH.Servings), 2) AS TotalCalcium,
+		ROUND(SUM(P.Calories*PH.Servings), 2) AS TotalCalories
+	FROM ((DAILY_PLAN AS DP JOIN PLAN_HAS AS PH ON DP.Number = PH.PlanNumber) JOIN PRODUCT AS P ON PH.ProductBarcode = P.Barcode)
+	WHERE DP.Number = @number;
+
+END
+

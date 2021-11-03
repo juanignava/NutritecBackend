@@ -31,6 +31,31 @@ namespace Nutritec.Controllers
                                                     WHERE Email = '{credential}' OR Username = '{credential}'").FirstOrDefaultAsync();
         }
 
+        // Get not associate patient by email portion
+        [HttpGet("unassociated/{emailtext}")]
+        public async Task<IEnumerable<Patient>> GetUnassociatedByEmail(string emailtext)
+        {
+            // Use SQL query to get the result
+            return await _context.Patients.FromSqlRaw(@$"SELECT *
+                                                        FROM PATIENT
+                                    WHERE NutritionistEmail IS NULL AND Email Like '%{emailtext}%'").ToListAsync();
+
+        }
+
+        // Update the nutritionist associated to the patient
+        [HttpPut("associate/{patientEmail}/{nutritionistEmail}")]
+        public async Task<ActionResult> UpdatePatientNutritionist(string patientEmail, string nutritionistEmail)
+        {
+            // Use sql query to update the value
+            await _context.Database.ExecuteSqlInterpolatedAsync(@$"UPDATE PATIENT
+                                                                   SET NutritionistEmail = {nutritionistEmail}
+                                                                   WHERE Email = {patientEmail}");
+
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
+
         // Post a patient
         [HttpPost]
         public async Task<ActionResult> Add(Patient patient)
