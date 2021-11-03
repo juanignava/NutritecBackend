@@ -66,6 +66,21 @@ namespace Nutritec.Controllers
             return Ok();
             
         }
+
+        // Associate a plan to a patient
+        [HttpPost("followplan/{planNumber}/{patientEmail}/{month}")]
+        public async Task<ActionResult> AddFollowRelation(int planNumber, string patientEmail, string month)
+        {
+            // sql insertion
+            await _context.Database.ExecuteSqlInterpolatedAsync($@"INSERT INTO FOLLOWS
+                                    (PatientEmail, PlanNumber, Month)
+                            VALUES  ({patientEmail}, {planNumber}, {month})");
+
+            // save the changes
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
         
     }
 }

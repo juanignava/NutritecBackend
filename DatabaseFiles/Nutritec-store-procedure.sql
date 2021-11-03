@@ -1,3 +1,24 @@
+-- Create Views --
+/*
+Description: this view joins the tables needed to get the products of an
+specific plan
+*/
+CREATE VIEW PLAN_PRODUCT_VIEW
+AS SELECT DP.Number, P.Barcode, P.Name, P.Description, PH.Servings, PH.Mealtime
+FROM (DAILY_PLAN AS DP JOIN PLAN_HAS AS PH ON  DP.Number = PH.PlanNumber) JOIN PRODUCT AS P ON PH.ProductBarcode = P.Barcode
+
+CREATE VIEW PATIENT_PRODUCTS
+AS SELECT PA.Email, PR.Barcode, PR.Name, CP.Day, CP.Meal
+FROM 
+	(PATIENT AS PA JOIN CONSUMES_PRODUCT AS CP ON PA.Email = CP.PatientEmail) 
+	JOIN PRODUCT AS PR ON CP.ProductBarcode =PR.Barcode;
+
+CREATE VIEW PATIENT_RECIPES
+AS SELECT PA.Email, RE.Number, RE.Name, CR.Day, CR.Meal
+FROM 
+	(PATIENT AS PA JOIN CONSUMES_RECIPE AS CR ON PA.Email = CR.PatientEmail) 
+	JOIN RECIPE AS RE ON CR.RecipeNumber = RE.Number;
+
 -- Create functions --
 
 /*
@@ -95,12 +116,13 @@ Input: @number corresponds to the number of the plan in analysis
 */
 
 CREATE PROCEDURE uspPlanDetails(
-	@number INT -- plan number
+	@number INT = NULL-- plan number
 )
 AS
 BEGIN
 
 	SELECT
+		DP.Number,
 		ROUND(SUM(P.Sodium*PH.Servings), 2) AS TotalSodium,
 		ROUND(SUM(P.Carbohydrates*PH.Servings), 2) AS TotalCarbohydrates,
 		ROUND(SUM(P.Protein*PH.Servings), 2) AS TotalProtein,
@@ -109,7 +131,8 @@ BEGIN
 		ROUND(SUM(P.Calcium*PH.Servings), 2) AS TotalCalcium,
 		ROUND(SUM(P.Calories*PH.Servings), 2) AS TotalCalories
 	FROM ((DAILY_PLAN AS DP JOIN PLAN_HAS AS PH ON DP.Number = PH.PlanNumber) JOIN PRODUCT AS P ON PH.ProductBarcode = P.Barcode)
-	WHERE DP.Number = @number;
+	WHERE (@number IS NULL OR DP.Number = @number)
+	GROUP BY DP.Number;
 
 END
 

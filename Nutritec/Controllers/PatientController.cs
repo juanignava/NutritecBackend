@@ -42,6 +42,28 @@ namespace Nutritec.Controllers
 
         }
 
+        // Get associate patient to a nutritionist by email portion
+        [HttpGet("associated/{nutritionistEmail}/{emailtext}")]
+        public async Task<IEnumerable<Patient>> GetAssociatedByEmail(string nutritionistEmail, string emailtext)
+        {
+            // Use SQL query to get the result
+            return await _context.Patients.FromSqlRaw(@$"SELECT *
+                                                        FROM PATIENT
+                                    WHERE NutritionistEmail = '{nutritionistEmail}' AND Email Like '%{emailtext}%'").ToListAsync();
+
+        }
+
+        // Get associated patients to a nutritionist 
+        [HttpGet("associated/{nutritionistemail}")]
+        public async Task<IEnumerable<Patient>> GetAssociatedByNutritionist(string nutritionistemail)
+        {
+            // Use SQL query to get the result
+            return await _context.Patients.FromSqlRaw(@$"SELECT *
+                                                        FROM PATIENT
+                                    WHERE NutritionistEmail = '{nutritionistemail}'").ToListAsync();
+
+        }
+
         // Update the nutritionist associated to the patient
         [HttpPut("associate/{patientEmail}/{nutritionistEmail}")]
         public async Task<ActionResult> UpdatePatientNutritionist(string patientEmail, string nutritionistEmail)

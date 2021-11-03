@@ -21,4 +21,10 @@ DROP FUNCTION func_getPatients;
 
 -- Drop procedures --
 
-DROP PROCEDURE uspNutritionistReport;
+DROP PROCEDURE uspNutritionistReport
+DROP PROCEDURE uspPlanDetails;
+
+-- Drop views --
+DROP VIEW PLAN_PRODUCT_VIEW;
+DROP VIEW PATIENT_PRODUCTS;
+DROP VIEW PATIENT_RECIPES;

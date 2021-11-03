@@ -62,6 +62,22 @@ namespace Nutritec.Controllers
                                                          WHERE Approved = '{state}'").ToListAsync();
         }
 
+        // Get consumed products and recipes consumed by patient email, consuptoin day and meal
+        [HttpGet("consumption/{patientEmail}/{day}/{meal}")]
+        public async Task<IEnumerable<ConsumptionModel>> GetConsumptionDetails(string patientEmail, string day, string meal)
+        {
+            // use sql query to get the consumption details
+            return await _context.ConsumptionModels.FromSqlRaw($@"SELECT * 
+                                                                  FROM PATIENT_RECIPES
+                                                                  WHERE Email = '{patientEmail}' AND Day = '{day}' AND Meal = '{meal}'
+                                                                  
+                                                                  UNION
+                
+                                                                  SELECT * 
+                                                                  FROM PATIENT_PRODUCTS
+                                                                  WHERE Email = '{patientEmail}' AND Day = '{day}' AND Meal = '{meal}'").ToListAsync();
+        }
+
 
         // Update product Approved state
         [HttpPut("Approved/{barcode}/{state}")]
