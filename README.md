@@ -63,6 +63,24 @@ Url: `/api/Patient`
 ```
 
 
+### (Measurement)
+
+POST measurement
+
+```Json
+{
+  "date": "2020-12-24",
+  "patientEmail": "lu.morales@gmail.com",
+  "height": 1.83,
+  "weight": 70,
+  "hips": 60,
+  "waist": 82,
+  "neck": 40,
+  "fatPercentage": 16,
+  "musclePercentage": 84
+}
+```
+
 ### (Products)
 
 POST product
