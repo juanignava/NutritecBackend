@@ -46,7 +46,7 @@ namespace Nutritec.Controllers
             return await _context.NutritionistReports.FromSqlRaw($"EXECUTE uspNutritionistReport {chargeType}").ToListAsync();
         }
 
-        // Get nutritionist password by email or username
+        // Get nutritionist password by email or username (NU.1)
         [HttpGet("login/{credential}")]
         public async Task<ActionResult<Nutritionist>> GetNutritionistByCredential(string credential)
         {
@@ -63,7 +63,7 @@ namespace Nutritec.Controllers
             return await _context.Nutritionists.FromSqlRaw("SELECT * FROM NUTRITIONIST").ToListAsync();
         }
 
-        // Post a nutritionist
+        // Post a nutritionist (NU.1)
         [HttpPost]
         public async Task<ActionResult> Add(Nutritionist nutritionist)
         {
@@ -84,7 +84,7 @@ namespace Nutritec.Controllers
             string username = nutritionist.Username;
             int nutritionistCode = nutritionist.NutritionistCode;
             int id = nutritionist.Id;
-            int active = nutritionist.Active;
+            int active = 1;
             string firstName = nutritionist.FirstName;
             string lastName1 = nutritionist.LastName1;
             string lastname2 = nutritionist.LastName2;

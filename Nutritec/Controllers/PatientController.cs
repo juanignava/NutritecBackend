@@ -16,19 +16,17 @@ namespace Nutritec.Controllers
     {
         private readonly NutritecContext _context;
 
-        public PatientController(NutritecContext context)
+        public PatientController()
         {
-            _context = context;
+            _context = new NutritecContext();
         }
 
-        // Get patient by email or username
+        // Get patient by email or username (PA.1)
         [HttpGet("login/{credential}")]
         public async Task<ActionResult<Patient>> GetPatientByCredential(string credential)
         {
             // Use SQL query to search by email or username
-            return await _context.Patients.FromSqlRaw($@"SELECT *
-                                                    FROM PATIENT
-                                                    WHERE Email = '{credential}' OR Username = '{credential}'").FirstOrDefaultAsync();
+            return await _context.Patients.FromSqlRaw(@$"SELECT * FROM PATIENT WHERE Email = '{credential}' OR Username = '{credential}'").FirstOrDefaultAsync();
         }
 
         // Get not associate patient by email portion

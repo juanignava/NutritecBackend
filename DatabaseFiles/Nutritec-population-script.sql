@@ -1,13 +1,13 @@
 INSERT INTO NUTRITIONIST(Email, Username, NutritionistCode, Id, Active, FirstName, LastName1, LastName2, BirthDate, Password, ChargeType, Weight, Height, CreditCardNumber, Country, Province, Canton)
-			VALUES		('ju.navarro@gmail.com', 'juanignava', 10000, 118180814, 1, 'Juan', 'Navarro', 'Navarro', '02-08-2001', 'passwordnacho', 'weekly', 60, 1.7, 123456789, 'Costa Rica', 'Cartago', 'Cartago'),
-						('an.rodriguez@gmail.com', 'anarodri', 10001, 123245673, 1, 'Ana', 'Rodriguez', 'Quesada', '04-05-2003', 'passwordana', 'monthly', 65, 1.7, 564897123, 'Mexico', 'Guadalajara', 'Central'),
-						('sa.salazar@outlook.com', 'samuel-s', 10002, 303040899, 1, 'Samuel', 'Salazar', 'Carvajal', '02-03-1995', 'passwordsamuel', 'anual', 80, 1.9, 231658899, 'Costa Rica', 'San Jose', 'Moravia');
+			VALUES		('ju.navarro@gmail.com', 'juanignava', 10000, 118180814, 1, 'Juan', 'Navarro', 'Navarro', '02-08-2001', '81dc9bdb52d04dc20036dbd8313ed055', 'weekly', 60, 1.7, 123456789, 'Costa Rica', 'Cartago', 'Cartago'),
+						('an.rodriguez@gmail.com', 'anarodri', 10001, 123245673, 1, 'Ana', 'Rodriguez', 'Quesada', '04-05-2003', '81dc9bdb52d04dc20036dbd8313ed055', 'monthly', 65, 1.7, 564897123, 'Mexico', 'Guadalajara', 'Central'),
+						('sa.salazar@outlook.com', 'samuel-s', 10002, 303040899, 1, 'Samuel', 'Salazar', 'Carvajal', '02-03-1995', '81dc9bdb52d04dc20036dbd8313ed055', 'anual', 80, 1.9, 231658899, 'Costa Rica', 'San Jose', 'Moravia');
 
 INSERT INTO PATIENT (Email, Username, FirstName, LastName1, LastName2, BirthDate, Passowrd, NutritionistEmail)
-			VALUES	('lu.morales@gmail.com', 'luismorales', 'Luis', 'Morales', 'Rodriguez', '05-30-1999', 'passwordLuis', 'ju.navarro@gmail.com'),
-					('mo.waterhouse@gmail.com', 'moniwaterhouse', 'Monica', 'Waterhouse', 'Montoya', '07-08-1999', 'passwordmoni', 'ju.navarro@gmail.com'),
-					('jo.granados@gmail.com', 'nachogranados', 'Jose', 'Granados', 'Marin', '07-09-2000', 'passwordnacho', NULL),
-					('ca.sanabria@gmail.com', 'carlos', 'Carlos', 'Sanabria', 'Perez', '07-08-2001', 'passwordcarlos', 'an.rodriguez@gmail.com');
+			VALUES	('lu.morales@gmail.com', 'luismorales', 'Luis', 'Morales', 'Rodriguez', '05-30-1999', '81dc9bdb52d04dc20036dbd8313ed055', 'ju.navarro@gmail.com'),
+					('mo.waterhouse@gmail.com', 'moniwaterhouse', 'Monica', 'Waterhouse', 'Montoya', '07-08-1999', '81dc9bdb52d04dc20036dbd8313ed055', 'ju.navarro@gmail.com'),
+					('jo.granados@gmail.com', 'nachogranados', 'Jose', 'Granados', 'Marin', '07-09-2000', '81dc9bdb52d04dc20036dbd8313ed055', NULL),
+					('ca.sanabria@gmail.com', 'carlos', 'Carlos', 'Sanabria', 'Perez', '07-08-2001', '81dc9bdb52d04dc20036dbd8313ed055', 'an.rodriguez@gmail.com');
 
 INSERT INTO MEASUREMENT (Number, Date, PatientEmail, Height, Weight, Hips, Waist, Neck, FatPercentage, MusclePercentage)
 			VALUES	(1, '08-02-2020', 'lu.morales@gmail.com', 1.81, 70, 60, 80, 40, 15, 85),
