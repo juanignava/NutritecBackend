@@ -78,6 +78,20 @@ namespace Nutritec.Controllers
                                                                   WHERE Email = '{patientEmail}' AND Day = '{day}' AND Meal = '{meal}'").ToListAsync();
         }
 
+        // Add product in the list of consumption
+        [HttpPost("consumption/addproduct/{barcode}/{patientEmail}/{day}/{meal}/{servings}")]
+        public async Task<ActionResult> AddProductToConsumption(int barcode, string patientEmail, string day, string meal, int servings)
+        {
+            await _context.Database.ExecuteSqlInterpolatedAsync($@"INSERT INTO CONSUMES_PRODUCT
+                                            (ProductBarcode, PatientEmail, Day, Meal, Servings)
+                                VALUES      ({barcode}, {patientEmail}, {day}, {meal}, {servings})");
+
+            // save the changes
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
+
 
         // Update product Approved state
         [HttpPut("Approved/{barcode}/{state}")]
