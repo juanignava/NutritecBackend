@@ -20,7 +20,7 @@ namespace Nutritec.Controllers
             _context = new NutritecContext();
         }
 
-        // Get all plans related to a nutritionist
+        // Get all plans related to a nutritionist (DP.1)
         [HttpGet("bynutritionist/{nutritionist}")]
         public async Task<IEnumerable<DailyPlan>> GetPlansRelatedNutritionist(string nutritionist)
         {
@@ -30,7 +30,7 @@ namespace Nutritec.Controllers
                                                            WHERE NutritionistEmail = '{nutritionist}'").ToListAsync();
         }
 
-        // Get nutritional values of the plan
+        // Get nutritional values of the plan (DP.3)
         [HttpGet("nutritionalvalue/{planNumber}")]
         public async Task<IEnumerable<PlanNutritionalValue>> GetNutritionalValues(int planNumber)
         {
@@ -39,7 +39,7 @@ namespace Nutritec.Controllers
 
         }
 
-        // Post of a plan with just the name
+        // Post of a plan with just the name (DP.2)
         [HttpPost("{name}/{nutritionistEmail}")]
         public async Task<ActionResult> Add(string name, string nutritionistEmail)
         {

@@ -101,7 +101,7 @@ BEGIN
 		dbo.func_getPatients(N.Email) AS Payment,
 		dbo.func_getPatients(N.Email)*dbo.discount(N.ChargeType) AS Discount,
 		dbo.func_getPatients(N.Email)-dbo.func_getPatients(N.Email)*dbo.discount(N.ChargeType) AS Amount
-	FROM (NUTRITIONIST AS N JOIN PATIENT AS P ON N.Email = P.NutritionistEmail)
+	FROM (NUTRITIONIST AS N LEFT JOIN PATIENT AS P ON N.Email = P.NutritionistEmail)
 	WHERE (@type IS NULL OR N.ChargeType = @type);
 
 END

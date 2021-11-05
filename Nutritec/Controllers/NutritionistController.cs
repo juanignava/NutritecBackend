@@ -38,7 +38,7 @@ namespace Nutritec.Controllers
 
         */
 
-        // Get nutritionist report by charge type
+        // Get nutritionist report by charge type (NU.3)
         [HttpGet("report/{chargeType}")]
         public async Task<IEnumerable<NutritionistReport>> GetNutritionistReport(string chargeType)
         {

@@ -20,7 +20,7 @@ namespace Nutritec.Controllers
             _context = new NutritecContext();
         }
 
-        // Get specific product by Barcode
+        // Get specific product by Barcode (PR.2)
         [HttpGet("{barcode}")]
         public async Task<ActionResult<Product>> GetPrdoctByBarcode(int barcode)
         {
@@ -30,7 +30,7 @@ namespace Nutritec.Controllers
                                                          WHERE Barcode = {barcode}").FirstOrDefaultAsync();
         }
 
-        // Get all products related to a plan number by mealtime
+        // Get all products related to a plan number by mealtime (PR.5)
         [HttpGet("byplan/{planNumber}/{mealtime}")]
         public async Task<IEnumerable<PlanProductView>> GetProductByPlan(int planNumber, string mealtime)
         {
@@ -41,18 +41,21 @@ namespace Nutritec.Controllers
 
         }
 
-        // Get all products that are NOT related to a plan number by mealtime
+        // Get all products that are NOT related to a plan number by mealtime (PR.6)
         [HttpGet("notinplan/{planNumber}/{mealtime}")]
-        public async Task<IEnumerable<PlanProductView>> GetProductNotInPlan(int planNumber, string mealtime)
+        public async Task<IEnumerable<Product>> GetProductNotInPlan(int planNumber, string mealtime)
         {
             // Use sql query to search in view
-            return await _context.PlanProductViews.FromSqlRaw($@"SELECT *
-                                                                FROM PLAN_PRODUCT_VIEW
-                                                                WHERE Number != {planNumber} AND Mealtime != '{mealtime}'").ToListAsync();
+            return await _context.Products.FromSqlRaw($@"SELECT *
+                                                         FROM PRODUCT
+                                                         WHERE Barcode Not in
+                                                            (SELECT Barcode
+                                                            FROM PLAN_PRODUCT_VIEW
+                                                            WHERE Number = {planNumber} AND Mealtime = '{mealtime}')").ToListAsync();
 
         }
 
-        // Get all products bases on the state (Pending, Approved or Declined)
+        // Get all products bases on the state (Pending, Approved or Declined) (PR.1)
         [HttpGet("state/{state}")]
         public async Task<IEnumerable<Product>> GetPendingProducts(string state)
         {
@@ -93,7 +96,7 @@ namespace Nutritec.Controllers
         }
 
 
-        // Update product Approved state
+        // Update product Approved state (PR.3)
         [HttpPut("Approved/{barcode}/{state}")]
         public async Task<ActionResult> UpdateProductApprovedState(int barcode, string state)
         {
@@ -122,7 +125,7 @@ namespace Nutritec.Controllers
         }
 
 
-        // Post a product
+        // Post a product (PR.4)
         [HttpPost]
         public async Task<ActionResult> Add(Product product)
         {
