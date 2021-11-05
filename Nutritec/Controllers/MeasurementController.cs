@@ -20,7 +20,7 @@ namespace Nutritec.Controllers
             _context = new NutritecContext();
         }
 
-        // Get measurement by email address, filtering between dates
+        // Get measurement by email address, filtering between dates (ME.1)
         [HttpGet("filterdates/{patientEmail}/{initialDate}/{endingDate}")]
         public async Task<IEnumerable<Measurement>> GetMeasurementsFilteredByDate(string patientEmail, string initialDate, string endingDate)
         {
@@ -34,7 +34,7 @@ namespace Nutritec.Controllers
                                                             ORDER BY Date").ToListAsync();
         }
 
-        // Get specific measurement based on the key values
+        // Get specific measurement based on the key values (ME.2)
         [HttpGet("{patientEmail}/{number}")]
         public async Task<ActionResult<Measurement>> GetSpecificMeasurement(string patientEmail, int number)
         {
@@ -46,7 +46,7 @@ namespace Nutritec.Controllers
                                                                 Number = {number}").FirstOrDefaultAsync();
         }
 
-        // Post measurement
+        // Post measurement (ME.3)
         [HttpPost]
         public async Task<ActionResult> Add(Measurement measurement)
         {

@@ -40,7 +40,7 @@ namespace Nutritec.Controllers
 
         }
 
-        // Get associate patient to a nutritionist by email portion
+        // Get associate patient to a nutritionist by email portion (PA.5)
         [HttpGet("associated/{nutritionistEmail}/{emailtext}")]
         public async Task<IEnumerable<Patient>> GetAssociatedByEmail(string nutritionistEmail, string emailtext)
         {

@@ -81,7 +81,7 @@ namespace Nutritec.Controllers
                                                                   WHERE Email = '{patientEmail}' AND Day = '{day}' AND Meal = '{meal}'").ToListAsync();
         }
 
-        // Add product in the list of consumption
+        // Add product in the list of consumption (PR.9)
         [HttpPost("consumption/addproduct/{barcode}/{patientEmail}/{day}/{meal}/{servings}")]
         public async Task<ActionResult> AddProductToConsumption(int barcode, string patientEmail, string day, string meal, int servings)
         {
@@ -109,7 +109,7 @@ namespace Nutritec.Controllers
             return Ok();
         }
 
-        // Create relation between a product and a plan
+        // Create relation between a product and a plan (PR.7)
         [HttpPost("newproductinplan/{planNumber}/{productBarcode}/{mealtime}/{servings}")]
         public async Task<ActionResult> AddProductInPlan(int planNumber, int productBarcode, string mealtime, int servings)
         {

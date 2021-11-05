@@ -20,7 +20,7 @@ namespace Nutritec.Controllers
             _context = new NutritecContext();
         }
 
-        // Get recipes by the patient that made it
+        // Get recipes by the patient that made it (RE.1)
         [HttpGet("getbypatient/{patientEmail}")]
         public async Task<IEnumerable<Recipe>> GetRecipesFromCreator(string patientEmail)
         {
@@ -30,7 +30,21 @@ namespace Nutritec.Controllers
                                                         WHERE  PatientEmail = '{patientEmail}'").ToListAsync();
         }
 
-        // Get recipe by number 
+        // Add recipe in the list of consumption (RE.2)
+        [HttpPost("consumption/addrecipe/{number}/{patientEmail}/{day}/{meal}")]
+        public async Task<ActionResult> AddRecipeToConsumption(int number, string patientEmail, string day, string meal)
+        {
+            await _context.Database.ExecuteSqlInterpolatedAsync($@"INSERT INTO CONSUMES_RECIPE
+                                            (RecipeNumber, PatientEmail, Day, Meal)
+                                VALUES      ({number}, {patientEmail}, {day}, {meal})");
+
+            // save the changes
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        // Get recipe by number (RE.3)
         [HttpGet("specific/{number}")]
         public async Task<ActionResult<Recipe>> GetRecipesByNumber(int number)
         {
@@ -40,7 +54,7 @@ namespace Nutritec.Controllers
                                                         WHERE Number = {number}").FirstOrDefaultAsync();
         }
 
-        // Get the products that are in the recipe
+        // Get the products that are in the recipe (RE.4)
         [HttpGet("getproductsin/{number}")]
         public async Task<IEnumerable<Product>> GetProductsInRecipe(int number)
         {
@@ -51,7 +65,7 @@ namespace Nutritec.Controllers
                 WHERE RH.RecipeNumber = {number}").ToListAsync();
         }
 
-        // Get the products that are NOT in the recipe
+        // Get the products that are NOT in the recipe (RE.5)
         [HttpGet("getproductsnotin/{number}")]
         public async Task<IEnumerable<Product>> GetProductsNotInRecipe(int number)
         {
@@ -63,7 +77,7 @@ namespace Nutritec.Controllers
                 WHERE RH.RecipeNumber = {number}").ToListAsync();
         }
 
-        // Add product to recipe
+        // Add product to recipe  (RE.6)
         [HttpPost("newproductinrecipe/{number}/{barcode}/{servings}")]
         public async Task<ActionResult> AddProductInRecipe(int number, int barcode,  int servings)
         {
@@ -78,6 +92,8 @@ namespace Nutritec.Controllers
             return Ok();
         }
 
+
+        // Post a recipe (RE.3)
         [HttpPost("postrecipe/{name}/{patientEmail}")]
         public async Task<ActionResult> AddRecipe(string name, string patientEmail)
         {

@@ -38,7 +38,7 @@ Json: You get a Json like this one
 }
 ```
 
-Observations: Resturned password is encrypted. All the initial population script nutritionists have '1234' as password.
+Observations: Resturned password is encrypted. All the initial population script nutritionists have '1234' as password. 
 
 ### NU.2
 
@@ -72,7 +72,7 @@ Json: You have to share a Json like this one
 }
 ```
 
-Observations: All details have to be different than null (except to picture Url). Consider that email, username, nutritionistCode and creditCArdNumber are unique values (must not repeat with the values of other nustritionists).
+Observations: All details have to be different than null (except to picture Url). Consider that email, username, nutritionistCode and creditCArdNumber are unique values (must not repeat with the values of other nustritionists). Dates must have the format "YY-MM-DD" (for example 2020-08-02 for August second 2020).
 
 ### NU.3
 
@@ -175,7 +175,7 @@ Json: You have to share a Json like this one
 }
 ```
 
-Observations: All details have to be different than null. Consider that email and username.
+Observations: All details have to be different than null. Consider that email and username. Dates must have the format "YY-MM-DD" (for example 2020-08-02 for August second 2020).
 
 ### PA.3
 
@@ -434,7 +434,7 @@ Type: GET
 
 Description: Get the products related to a plan and meal.
 
-Url: `/api/Product/byplan/{planNumber}/{mealtime}` where `planNumber` is the number of the plan to filter and `mealtime` corresponds to the meal we are filtering the products. The allowed values for `mealtime` are 'Breakfast', 'Morning snack', 'lunch', 'Afternoon snack', 'diner'.
+Url: `/api/Product/byplan/{planNumber}/{mealtime}` where `planNumber` is the number of the plan to filter and `mealtime` corresponds to the meal we are filtering the products. The allowed values for `mealtime` are 'Breakfast', 'Morning snack', 'Lunch', 'Afternoon snack', 'Diner'.
 
 Json: You will receive a Json like this one.
 
@@ -467,7 +467,7 @@ Json: You will receive a Json like this one.
 ]
 ```
 
-Observations: Notice that you receive just some of the deatils of a product (nutritional values are not included). The allowed values for `mealtime` are 'Breakfast', 'Morning snack', 'lunch', 'Afternoon snack', 'diner'.
+Observations: Notice that you receive just some of the deatils of a product (nutritional values are not included). The allowed values for `mealtime` are 'Breakfast', 'Morning snack', 'Lunch', 'Afternoon snack', 'Diner'.
 
 ### PR.6
 
@@ -475,7 +475,7 @@ Type: GET
 
 Description: Get the products that are not related to a plan and meal.
 
-Url: `/api/Product/notinplan/{planNumber}/{mealtime}` where `planNumber` is the number of the plan to filter and `mealtime` corresponds to the meal we are filtering the products. The allowed values for `mealtime` are 'Breakfast', 'Morning snack', 'lunch', 'Afternoon snack', 'diner'.
+Url: `/api/Product/notinplan/{planNumber}/{mealtime}` where `planNumber` is the number of the plan to filter and `mealtime` corresponds to the meal we are filtering the products. The allowed values for `mealtime` are 'Breakfast', 'Morning snack', 'Lunch', 'Afternoon snack', 'Diner'.
 
 Json: You will receive a Json like this one.
 
@@ -547,7 +547,7 @@ Url: `/api/Product/newproductinplan/{planNumber}/{productBarcode}/{mealtime}/{se
 
 Json: You don't need send a Json in this request.
 
-Observations: The allowed values for `mealtime` are 'Breakfast', 'Morning snack', 'lunch', 'Afternoon snack', 'diner'.
+Observations: The allowed values for `mealtime` are 'Breakfast', 'Morning snack', 'Lunch', 'Afternoon snack', 'Diner'.
 
 ### PR.8
 
@@ -571,10 +571,193 @@ Json: You will receive a Json like this one.
 ]
 ```
 
-Observations: `day` need to have the value of ('Monday', 'Tuesday', 'Wednesday', 'Thursday' or 'Friday')
+Observations: `day` need to have the value of ('Monday', 'Tuesday', 'Wednesday', 'Thursday' or 'Friday'). The allowed values for `mealtime` are 'Breakfast', 'Morning snack', 'Lunch', 'Afternoon snack', 'Diner'.
+
+### PR.9
+
+Type: POST
+
+Description: Adds a product to the consumption tamble of a specific patient.
+
+Url: `/api/Product/consumption/addproduct/{barcode}/{patientEmail}/{day}/{meal}/{servings}` where `barcode` is the barcode of the product to add, `patientEmail` is the email of the patient that consumed the product, `day` and `meal` correspond to the time of consumption and `servings` is the amount of product consumed.
+
+Json: There is no Json in this request
+
+Observations: `day` need to have the value of ('Monday', 'Tuesday', 'Wednesday', 'Thursday' or 'Friday'). The allowed values for `mealtime` are 'Breakfast', 'Morning snack', 'Lunch', 'Afternoon snack', 'Diner'.
 
 
 ## Requests RECIPE
+
+### RE.1
+
+Type: GET
+
+Description: Get all the recipes done by a patient
+
+Url: `/api/Recipe/getbypatient/{patientEmail}` where `patientEmail` is the logged patient.
+
+Json: You will receive a Json like this one.
+
+```Json
+[
+  {
+    "number": 1,
+    "name": "Pinto",
+    "patientEmail": "lu.morales@gmail.com",
+    "patientEmailNavigation": null,
+    "consumesRecipes": [],
+    "recipeHas": []
+  },
+  {
+    "number": 6,
+    "name": "Beef and beans",
+    "patientEmail": "lu.morales@gmail.com",
+    "patientEmailNavigation": null,
+    "consumesRecipes": [],
+    "recipeHas": []
+  }
+]
+```
+
+Observations: --
+
+### RE.2
+
+Type: POST
+
+Description: Add a recipe to the consumption table
+
+Url: `/api/Recipe/consumption/addrecipe/{number}/{patientEmail}/{day}/{meal}` where `patientEmail` is the logged patient, `number` is the number of the recipe to add and `day` and `meal` are the time of consumption.
+
+Json: This request doesn't have Json.
+
+Observations: `day` need to have the value of ('Monday', 'Tuesday', 'Wednesday', 'Thursday' or 'Friday'). The allowed values for `mealtime` are 'Breakfast', 'Morning snack', 'Lunch', 'Afternoon snack', 'Diner'.
+
+### RE.3
+
+Type: POST
+
+Description: Post a recipe
+
+Url: `/api/Recipe/postrecipe/{name}/{patientEmail}` where `patientEmail` is the logged patient, `name` is the name of the recipe to add.
+
+Json: This request doesn't have Json.
+
+Observations: There is no need to specify the recipe number, the backend does that.
+
+### RE.4
+
+Type: GET
+
+Description: Get all the products in a recipe
+
+Url: `/api/Recipe/getproductsin/{number}` where `number` is the number of the recipe.
+
+Json: You will receive a Json like this one.
+
+```Json
+[
+  {
+    "barcode": 1000,
+    "approved": "Approved",
+    "name": "Rice",
+    "description": "A serving of white rice salt",
+    "sodium": 6,
+    "carbohydrates": 73,
+    "protein": 8,
+    "fat": 3,
+    "iron": 2,
+    "calcium": 20,
+    "calories": 332,
+    "consumesProducts": [],
+    "hasVitamins": [],
+    "planHas": [],
+    "recipeHas": []
+  },
+  {
+    "barcode": 1001,
+    "approved": "Approved",
+    "name": "Beans",
+    "description": "A serving black beans",
+    "sodium": 252,
+    "carbohydrates": 13.3,
+    "protein": 4,
+    "fat": 0,
+    "iron": 1.6,
+    "calcium": 28,
+    "calories": 71,
+    "consumesProducts": [],
+    "hasVitamins": [],
+    "planHas": [],
+    "recipeHas": []
+  }
+]
+```
+
+Observations: --
+
+### RE.5
+
+Type: GET
+
+Description: Get all the products that are not in a specific recipe
+
+Url: `/api/Recipe/getproductsnotin/{number}` where `number` is the number of the recipe.
+
+Json: You will receive a Json like this one.
+
+```Json
+[
+  {
+    "barcode": 1000,
+    "approved": "Approved",
+    "name": "Rice",
+    "description": "A serving of white rice salt",
+    "sodium": 6,
+    "carbohydrates": 73,
+    "protein": 8,
+    "fat": 3,
+    "iron": 2,
+    "calcium": 20,
+    "calories": 332,
+    "consumesProducts": [],
+    "hasVitamins": [],
+    "planHas": [],
+    "recipeHas": []
+  },
+  {
+    "barcode": 1001,
+    "approved": "Approved",
+    "name": "Beans",
+    "description": "A serving black beans",
+    "sodium": 252,
+    "carbohydrates": 13.3,
+    "protein": 4,
+    "fat": 0,
+    "iron": 1.6,
+    "calcium": 28,
+    "calories": 71,
+    "consumesProducts": [],
+    "hasVitamins": [],
+    "planHas": [],
+    "recipeHas": []
+  }
+]
+```
+
+### RE.6
+
+Type: POST
+
+Description: Add a product in a recipe
+
+Url: `/api/Recipe/newproductinrecipe/{number}/{barcode}/{servings}` is the logged patient, `name` is the name of the recipe to add, `barcode`  is the barcode of the product and `servings` is the amount of times the product is in the recipe.
+
+Json: This request doesn't have Json.
+
+Observations: There is no need to specify the recipe number, the backend does that.
+
+Observations: --
 
 ## Requests DAILY PLAN
 
@@ -675,14 +858,100 @@ Observations: Use predetermined values for `planNumber` a dropdown to select th 
 
 ## Requests MEASUREMENT
 
+/api/Measurement/{patientEmail}/{number}
 
+### ME.1
 
+Type: GET
+Description: Gets the measurements of a patient filtered by the initial and ending date.
 
+Url: `/api/Measurement/filterdates/{patientEmail}/{initialDate}/{endingDate}` where `patientEmail`  is the email of the patient that logged in, `initialDate` and `endingDate` are the dates the request filters on. Dates must have the format "YY-MM-DD" (for example 2020-08-02 for August second 2020).
 
+Json: You will receive a Json like this one.
 
-### (Measurement)
+```Json
+[
+  {
+    "number": 1,
+    "date": "2020-08-02T00:00:00",
+    "patientEmail": "lu.morales@gmail.com",
+    "height": 1.81,
+    "weight": 70,
+    "hips": 60,
+    "waist": 80,
+    "neck": 40,
+    "fatPercentage": 15,
+    "musclePercentage": 85,
+    "patientEmailNavigation": null
+  },
+  {
+    "number": 2,
+    "date": "2020-09-15T00:00:00",
+    "patientEmail": "lu.morales@gmail.com",
+    "height": 1.81,
+    "weight": 72,
+    "hips": 60,
+    "waist": 82,
+    "neck": 41,
+    "fatPercentage": 14,
+    "musclePercentage": 86,
+    "patientEmailNavigation": null
+  },
+  {
+    "number": 3,
+    "date": "2020-10-22T00:00:00",
+    "patientEmail": "lu.morales@gmail.com",
+    "height": 1.81,
+    "weight": 72,
+    "hips": 60,
+    "waist": 82,
+    "neck": 43,
+    "fatPercentage": 14,
+    "musclePercentage": 86,
+    "patientEmailNavigation": null
+  }
+]
+```
 
-POST measurement
+Observations: Dates must have the format "YY-MM-DD" (for example 2020-08-02 for August second 2020).
+
+### ME.2
+
+Type: GET
+
+Description: Gets an specific measurement based on the user email and measurement number.
+
+Url: `/api/Measurement/{patientEmail}/{number}` where `patientEmail`  is the email of the patient that logged in and `number` is the number of the measurement.
+
+Json: You will receive a Json like this one.
+
+```Json
+{
+  "number": 1,
+  "date": "2020-08-02T00:00:00",
+  "patientEmail": "lu.morales@gmail.com",
+  "height": 1.81,
+  "weight": 70,
+  "hips": 60,
+  "waist": 80,
+  "neck": 40,
+  "fatPercentage": 15,
+  "musclePercentage": 85,
+  "patientEmailNavigation": null
+}
+```
+
+Observations: --
+
+### ME.3
+
+Type: POST
+
+Description: Post a measurement.
+
+Url: `/api/Measurement`.
+
+Json: You need to share a Json like this one.
 
 ```Json
 {
@@ -697,6 +966,9 @@ POST measurement
   "musclePercentage": 84
 }
 ```
+
+Observations: Dates must have the format "YY-MM-DD" (for example 2020-08-02 for August second 2020).
+
 
 
 

@@ -67,7 +67,7 @@ namespace Nutritec.Controllers
             
         }
 
-        // Associate a plan to a patient
+        // Associate a plan to a patient (DP.4)
         [HttpPost("followplan/{planNumber}/{patientEmail}/{month}")]
         public async Task<ActionResult> AddFollowRelation(int planNumber, string patientEmail, string month)
         {
