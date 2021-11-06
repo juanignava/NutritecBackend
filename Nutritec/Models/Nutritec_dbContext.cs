@@ -6,13 +6,13 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Nutritec.Models
 {
-    public partial class NutritecContext : DbContext
+    public partial class Nutritec_dbContext : DbContext
     {
-        public NutritecContext()
+        public Nutritec_dbContext()
         {
         }
 
-        public NutritecContext(DbContextOptions<NutritecContext> options)
+        public Nutritec_dbContext(DbContextOptions<Nutritec_dbContext> options)
             : base(options)
         {
         }
@@ -26,35 +26,27 @@ namespace Nutritec.Models
         public virtual DbSet<Measurement> Measurements { get; set; }
         public virtual DbSet<Nutritionist> Nutritionists { get; set; }
         public virtual DbSet<Patient> Patients { get; set; }
+        public virtual DbSet<PatientProduct> PatientProducts { get; set; }
+        public virtual DbSet<PatientRecipe> PatientRecipes { get; set; }
         public virtual DbSet<PlanHa> PlanHas { get; set; }
+        public virtual DbSet<PlanProductView> PlanProductViews { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<Recipe> Recipes { get; set; }
         public virtual DbSet<RecipeHa> RecipeHas { get; set; }
         public virtual DbSet<Vitamin> Vitamins { get; set; }
-
-        public virtual DbSet<NutritionistReport> NutritionistReports { get; set; }
-        public virtual DbSet<PlanNutritionalValue> PlanNutritionalValues { get; set; }
-        public virtual DbSet<PlanProductView> PlanProductViews { get; set; }
-        public virtual DbSet<ConsumptionModel> ConsumptionModels { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                //optionsBuilder.UseSqlServer("Server=K5CK2UFV; Database=Nutritec; Trusted_Connection=True;");
                 optionsBuilder.UseSqlServer("Server=tcp:nutritecapidbserver.database.windows.net,1433;Initial Catalog=Nutritec_db;Persist Security Info=False;User ID=juanignava;Password=bases2021#;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<NutritionistReport>().HasNoKey();
-            modelBuilder.Entity<PlanNutritionalValue>().HasNoKey();
-            modelBuilder.Entity<PlanProductView>().HasNoKey();
-            modelBuilder.Entity<ConsumptionModel>().HasNoKey();
-
-            modelBuilder.HasAnnotation("Relational:Collation", "Modern_Spanish_CI_AS");
+            modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
 
             modelBuilder.Entity<Admin>(entity =>
             {
@@ -81,7 +73,7 @@ namespace Nutritec.Models
             modelBuilder.Entity<ConsumesProduct>(entity =>
             {
                 entity.HasKey(e => new { e.ProductBarcode, e.PatientEmail, e.Day, e.Meal })
-                    .HasName("PK__CONSUMES__A7081866526DDA84");
+                    .HasName("PK__CONSUMES__A708186632B63A41");
 
                 entity.ToTable("CONSUMES_PRODUCT");
 
@@ -113,7 +105,7 @@ namespace Nutritec.Models
             modelBuilder.Entity<ConsumesRecipe>(entity =>
             {
                 entity.HasKey(e => new { e.RecipeNumber, e.PatientEmail, e.Day, e.Meal })
-                    .HasName("PK__CONSUMES__BC5A9E1D69A24D8E");
+                    .HasName("PK__CONSUMES__BC5A9E1DC9643A64");
 
                 entity.ToTable("CONSUMES_RECIPE");
 
@@ -145,7 +137,7 @@ namespace Nutritec.Models
             modelBuilder.Entity<DailyPlan>(entity =>
             {
                 entity.HasKey(e => e.Number)
-                    .HasName("PK__DAILY_PL__78A1A19C7DE97DDC");
+                    .HasName("PK__DAILY_PL__78A1A19C02DDD39C");
 
                 entity.ToTable("DAILY_PLAN");
 
@@ -171,7 +163,7 @@ namespace Nutritec.Models
             modelBuilder.Entity<Follow>(entity =>
             {
                 entity.HasKey(e => new { e.PatientEmail, e.PlanNumber })
-                    .HasName("PK__FOLLOWS__678069EE45A412B0");
+                    .HasName("PK__FOLLOWS__678069EEB9976E4C");
 
                 entity.ToTable("FOLLOWS");
 
@@ -200,7 +192,7 @@ namespace Nutritec.Models
             modelBuilder.Entity<HasVitamin>(entity =>
             {
                 entity.HasKey(e => new { e.ProductBarcode, e.VitaminCode })
-                    .HasName("PK__HAS_VITA__F878CB25240211B0");
+                    .HasName("PK__HAS_VITA__F878CB256FE6E0C0");
 
                 entity.ToTable("HAS_VITAMIN");
 
@@ -224,7 +216,7 @@ namespace Nutritec.Models
             modelBuilder.Entity<Measurement>(entity =>
             {
                 entity.HasKey(e => new { e.PatientEmail, e.Number })
-                    .HasName("PK__MEASUREM__A78C237213838CE8");
+                    .HasName("PK__MEASUREM__A78C2372FDAA2639");
 
                 entity.ToTable("MEASUREMENT");
 
@@ -244,11 +236,11 @@ namespace Nutritec.Models
             modelBuilder.Entity<Nutritionist>(entity =>
             {
                 entity.HasKey(e => e.Email)
-                    .HasName("PK__NUTRITIO__A9D105359F4E94CE");
+                    .HasName("PK__NUTRITIO__A9D1053506D4FF73");
 
                 entity.ToTable("NUTRITIONIST");
 
-                entity.HasIndex(e => new { e.Username, e.NutritionistCode, e.Id, e.CreditCardNumber }, "UQ__NUTRITIO__62CFCAA9C144E91B")
+                entity.HasIndex(e => new { e.Username, e.NutritionistCode, e.Id, e.CreditCardNumber }, "UQ__NUTRITIO__62CFCAA9852359A9")
                     .IsUnique();
 
                 entity.Property(e => e.Email)
@@ -306,11 +298,11 @@ namespace Nutritec.Models
             modelBuilder.Entity<Patient>(entity =>
             {
                 entity.HasKey(e => e.Email)
-                    .HasName("PK__PATIENT__A9D10535248F87AA");
+                    .HasName("PK__PATIENT__A9D10535C0C054A7");
 
                 entity.ToTable("PATIENT");
 
-                entity.HasIndex(e => e.Username, "UQ__PATIENT__536C85E4CA0DD92E")
+                entity.HasIndex(e => e.Username, "UQ__PATIENT__536C85E4BB6C4A36")
                     .IsUnique();
 
                 entity.Property(e => e.Email)
@@ -354,10 +346,64 @@ namespace Nutritec.Models
                     .HasConstraintName("PATIENT_NUTRITIONIST_FK");
             });
 
+            modelBuilder.Entity<PatientProduct>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("PATIENT_PRODUCTS");
+
+                entity.Property(e => e.Day)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Email)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Meal)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<PatientRecipe>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("PATIENT_RECIPES");
+
+                entity.Property(e => e.Day)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Email)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Meal)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+            });
+
             modelBuilder.Entity<PlanHa>(entity =>
             {
                 entity.HasKey(e => new { e.PlanNumber, e.ProductBarcode, e.Mealtime })
-                    .HasName("PK__PLAN_HAS__9457BC1A52CCF8D3");
+                    .HasName("PK__PLAN_HAS__9457BC1AE9B607F0");
 
                 entity.ToTable("PLAN_HAS");
 
@@ -378,10 +424,31 @@ namespace Nutritec.Models
                     .HasConstraintName("PLAN_HAS_PRODUCT_FK");
             });
 
+            modelBuilder.Entity<PlanProductView>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("PLAN_PRODUCT_VIEW");
+
+                entity.Property(e => e.Description)
+                    .HasMaxLength(300)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Mealtime)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+            });
+
             modelBuilder.Entity<Product>(entity =>
             {
                 entity.HasKey(e => e.Barcode)
-                    .HasName("PK__PRODUCT__177800D22AC483D7");
+                    .HasName("PK__PRODUCT__177800D24A320264");
 
                 entity.ToTable("PRODUCT");
 
@@ -405,7 +472,7 @@ namespace Nutritec.Models
             modelBuilder.Entity<Recipe>(entity =>
             {
                 entity.HasKey(e => e.Number)
-                    .HasName("PK__RECIPE__78A1A19C2517BD44");
+                    .HasName("PK__RECIPE__78A1A19C334D88B8");
 
                 entity.ToTable("RECIPE");
 
@@ -431,7 +498,7 @@ namespace Nutritec.Models
             modelBuilder.Entity<RecipeHa>(entity =>
             {
                 entity.HasKey(e => new { e.RecipeNumber, e.ProductBarcode })
-                    .HasName("PK__RECIPE_H__02987846B62A6708");
+                    .HasName("PK__RECIPE_H__0298784668E3E281");
 
                 entity.ToTable("RECIPE_HAS");
 
@@ -451,7 +518,7 @@ namespace Nutritec.Models
             modelBuilder.Entity<Vitamin>(entity =>
             {
                 entity.HasKey(e => e.Code)
-                    .HasName("PK__VITAMIN__A25C5AA6DD6BC99B");
+                    .HasName("PK__VITAMIN__A25C5AA67CCC4CD6");
 
                 entity.ToTable("VITAMIN");
 

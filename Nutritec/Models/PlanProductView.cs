@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
+#nullable disable
 
 namespace Nutritec.Models
 {
-    public class PlanProductView
+    public partial class PlanProductView
     {
         public int Number { get; set; }
         public int Barcode { get; set; }

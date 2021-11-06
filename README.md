@@ -1,6 +1,28 @@
 # NutritecBackend
 Repository of the Nutritec app backend
 
+## Requests ADMIN
+
+### AD.1
+
+Type: GET
+
+Description: get a single admin based on its email or username
+
+Url: `/api/Admin/login/{credential}` where `credential` is the email or username.
+
+Json: You get a Json like this one
+
+```Json
+{
+  "email": "admin@nutritec.cr",
+  "username": "admin",
+  "password": "81dc9bdb52d04dc20036dbd8313ed055"
+}
+```
+
+Observations: Resturned password is encrypted. All the initial population script admins have '1234' as password. 
+
 ## Requests NUTRITIONIST
 
 ### NU.1
