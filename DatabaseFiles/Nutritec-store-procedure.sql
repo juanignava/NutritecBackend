@@ -7,11 +7,15 @@ CREATE VIEW PLAN_PRODUCT_VIEW
 AS SELECT DP.Number, P.Barcode, P.Name, P.Description, PH.Servings, PH.Mealtime
 FROM (DAILY_PLAN AS DP JOIN PLAN_HAS AS PH ON  DP.Number = PH.PlanNumber) JOIN PRODUCT AS P ON PH.ProductBarcode = P.Barcode
 
+GO
+
 CREATE VIEW PATIENT_PRODUCTS
 AS SELECT PA.Email, PR.Barcode, PR.Name, CP.Day, CP.Meal
 FROM 
 	(PATIENT AS PA JOIN CONSUMES_PRODUCT AS CP ON PA.Email = CP.PatientEmail) 
 	JOIN PRODUCT AS PR ON CP.ProductBarcode =PR.Barcode;
+
+GO
 
 CREATE VIEW PATIENT_RECIPES
 AS SELECT PA.Email, RE.Number, RE.Name, CR.Day, CR.Meal
@@ -19,6 +23,8 @@ FROM
 	(PATIENT AS PA JOIN CONSUMES_RECIPE AS CR ON PA.Email = CR.PatientEmail) 
 	JOIN RECIPE AS RE ON CR.RecipeNumber = RE.Number;
 
+
+GO
 -- Create functions --
 
 /*
@@ -41,6 +47,8 @@ BEGIN
 		RETURN @countPatient;
 END
 
+
+GO
 /*
 Description: this function determines the respective
 discount each nutritionist has based on the type of charge
@@ -74,7 +82,7 @@ BEGIN
 			
 END
 
-
+GO
 -- Create procedues -- 
 
 -- procedure #1 --
@@ -106,6 +114,7 @@ BEGIN
 
 END
 
+GO
 -- procedure #2 --
 
 /*
