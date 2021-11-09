@@ -995,7 +995,7 @@ Observations: Dates must have the format "YY-MM-DD" (for example 2020-08-02 for 
 
 # Nutritec Comments Requests
 
-The base of the url for these requests in the api is `https://nutriteccommentsrg.azurewebsites.net/`
+The base of the url for these requests in the api is `https://nutriteccommentsrg.azurewebsites.net`
 
 ## Requests COMMENT
 
