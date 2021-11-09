@@ -1,5 +1,6 @@
-# NutritecBackend
-Repository of the Nutritec app backend
+# Nutritec Requests
+
+The base of the url for these requests in the api is `https://nutritecrg.azurewebsites.net`
 
 ## Requests ADMIN
 
@@ -992,6 +993,83 @@ Json: You need to share a Json like this one.
 Observations: Dates must have the format "YY-MM-DD" (for example 2020-08-02 for August second 2020).
 
 
+# Nutritec Comments Requests
+
+The base of the url for these requests in the api is `https://nutriteccommentsrg.azurewebsites.net/`
+
+## Requests COMMENT
+
+### CO.1
+
+Type: GET
+
+Description: Get all comments in the databse
+
+Url: `/api/Comment/getcomments`.
+
+Json: You get a Json like this one
+
+```Json
+[
+    {
+        "id": "6189cdd2f0048c5344c92376",
+        "patientEmail": "lu.morales@gmail.com",
+        "day": "Monday",
+        "meal": "Breakfast",
+        "commentOwnerEmail": "ju.navarro@gmail.com",
+        "commentText": "Well done!"
+    }
+]
+```
+
+Observations: --
+
+### CO.2
+
+Type: GET
+
+Description: Get all comments filtered by patient, day and meal
+
+Url: `/api/Comment/getcomments/{patientEmail}/{day}/{meal}` where `patientEmail` stands for the email of the patient that receives the comment (the owner of the consumption data) and `day` and `meal` specify the place where the comment was done.
+
+Json: You get a Json like this one
+
+```Json
+[
+    {
+        "id": "6189cdd2f0048c5344c92376",
+        "patientEmail": "lu.morales@gmail.com",
+        "day": "Monday",
+        "meal": "Breakfast",
+        "commentOwnerEmail": "ju.navarro@gmail.com",
+        "commentText": "Well done!"
+    }
+]
+```
+
+Observations: --
+
+### CO.3
+
+Type: POST
+
+Description: Post a comment.
+
+Url: `/api/Comment/postcomment`.
+
+Json: You need to share a Json like this one
+
+```Json
+{
+    "patientEmail": "lu.morales@gmail.com",
+    "day": "Monday",
+    "meal": "Breakfast",
+    "commentOwnerEmail": "lu.morales@gmail.com",
+    "commentText": "Thank you!"
+}
+```
+
+Observations: it is not necessary to specify the `id` field because the database does it automatically. `day` needs to have the value of ('Monday', 'Tuesday', 'Wednesday', 'Thursday' or 'Friday'). The allowed values for `mealtime` are 'Breakfast', 'Morning snack', 'Lunch', 'Afternoon snack', 'Diner'.
 
 
 
