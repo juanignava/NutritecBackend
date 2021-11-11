@@ -210,3 +210,91 @@ BEGIN
 	DROP TABLE #TEMP_PRODUCTS_DATA
 
 END
+
+GO
+-- procedure #3 --
+
+/*
+Description: This procedure is used to get the products that are
+NOT consumed yet by a user for a patient at a specific time
+
+Input: @email is the email of the patient
+	   @day and @time specify the time of consumption.
+*/
+CREATE PROCEDURE uspProductsNotConsumed(
+	@email	AS VARCHAR(100),
+	@day	AS VARCHAR(100),
+	@meal	AS VARCHAR(100)
+)
+AS
+BEGIN
+	
+	CREATE TABLE #TEMP_PRODUCT
+	(
+		Barcode		INT,
+		Name		VARCHAR(100),
+		Description VARCHAR(200)
+	);
+
+	INSERT INTO #TEMP_PRODUCT
+		SELECT PR.Barcode, PR.Name, PR.Description
+		FROM
+			CONSUMES_PRODUCT AS CP
+			JOIN PRODUCT AS PR ON CP.ProductBarcode =PR.Barcode
+		WHERE
+			CP.PatientEmail = @email AND
+			CP.Day = @day AND
+			CP.Meal = @meal;
+
+	SELECT Barcode, Name, Description
+	FROM PRODUCT
+	EXCEPT
+	SELECT * FROM #TEMP_PRODUCT;
+	
+	DROP TABLE #TEMP_PRODUCT;
+
+END
+
+GO
+
+-- procedure #4 --
+
+/*
+Description: This procedure is used to get the recipes that are
+NOT consumed yet by a user for a patient at a specific time
+
+Input: @email is the email of the patient
+	   @day and @time specify the time of consumption.
+*/
+CREATE PROCEDURE uspRecipesNotConsumed(
+	@email	AS VARCHAR(100),
+	@day	AS VARCHAR(100),
+	@meal	AS VARCHAR(100)
+)
+AS
+BEGIN
+	
+	CREATE TABLE #TEMP_RECIPE
+	(
+		Number		INT,
+		Name		VARCHAR(100),
+	);
+
+	INSERT INTO #TEMP_RECIPE
+		SELECT RE.Number, RE.Name
+		FROM
+			CONSUMES_RECIPE AS CR
+			JOIN RECIPE AS RE ON CR.RecipeNumber = RE.Number
+		WHERE
+			CR.PatientEmail = @email AND
+			CR.Day = @day AND
+			CR.Meal = @meal;
+
+	SELECT Number, Name
+	FROM RECIPE
+	EXCEPT
+	SELECT * FROM #TEMP_RECIPE;
+	
+	DROP TABLE #TEMP_RECIPE;
+
+END

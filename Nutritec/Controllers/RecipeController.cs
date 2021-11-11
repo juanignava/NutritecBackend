@@ -59,10 +59,9 @@ namespace Nutritec.Controllers
         public async Task<IEnumerable<Product>> GetProductsInRecipe(int number)
         {
             // Use sql query that gets a recipe by its number
-            return await _context.Products.FromSqlRaw($@"SELECT DISTINCT 
-                P.Barcode, P.Approved, P.Name, P.Description, P.Sodium, P.Carbohydrates, P.Protein, P.Fat, P.Iron, P.Calcium, P.Calories
-                FROM RECIPE_HAS AS RH JOIN PRODUCT AS P ON RH.ProductBarcode = P.Barcode
-                WHERE RH.RecipeNumber = {number}").ToListAsync();
+            return await _context.Products.FromSqlRaw($@"SELECT DISTINCT P.*
+                    FROM RECIPE_HAS AS RH JOIN PRODUCT AS P ON RH.ProductBarcode = P.Barcode
+                    WHERE RH.RecipeNumber = {number}").ToListAsync();
         }
 
         // Get the products that are NOT in the recipe (RE.5)
@@ -72,7 +71,7 @@ namespace Nutritec.Controllers
             // Use sql query that gets a recipe by its number
             return await _context.Products.FromSqlRaw($@"SELECT * FROM PRODUCT
                 EXCEPT 
-                SELECT DISTINCT P.Barcode, P.Approved, P.Name, P.Description, P.Sodium, P.Carbohydrates, P.Protein, P.Fat, P.Iron, P.Calcium, P.Calories
+                SELECT DISTINCT P.*
                 FROM RECIPE_HAS AS RH JOIN PRODUCT AS P ON RH.ProductBarcode = P.Barcode
                 WHERE RH.RecipeNumber = {number}").ToListAsync();
         }
