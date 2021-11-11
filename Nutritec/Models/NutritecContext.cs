@@ -36,6 +36,8 @@ namespace Nutritec.Models
         public virtual DbSet<PlanNutritionalValue> PlanNutritionalValues { get; set; }
         public virtual DbSet<PlanProductView> PlanProductViews { get; set; }
         public virtual DbSet<ConsumptionModel> ConsumptionModels { get; set; }
+        public virtual DbSet<NoConsumptionProduct> NoConsumptionProducts { get; set; }
+        public virtual DbSet<NoConsumptionRecipe> NoConsumptionRecipes { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -53,6 +55,8 @@ namespace Nutritec.Models
             modelBuilder.Entity<PlanNutritionalValue>().HasNoKey();
             modelBuilder.Entity<PlanProductView>().HasNoKey();
             modelBuilder.Entity<ConsumptionModel>().HasNoKey();
+            modelBuilder.Entity<NoConsumptionProduct>().HasNoKey();
+            modelBuilder.Entity<NoConsumptionRecipe>().HasNoKey();
 
             modelBuilder.HasAnnotation("Relational:Collation", "Modern_Spanish_CI_AS");
 

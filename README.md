@@ -608,6 +608,43 @@ Json: There is no Json in this request
 
 Observations: `day` need to have the value of ('Monday', 'Tuesday', 'Wednesday', 'Thursday' or 'Friday'). The allowed values for `mealtime` are 'Breakfast', 'Morning snack', 'Lunch', 'Afternoon snack', 'Diner'.
 
+### PR.10
+
+Type: GET
+
+Description: Gets the products that have not been consumed by the patient.
+
+Url: `/api/Product/noconsumption/{patientEmail}/{day}/{meal}` where `patientEmail` is the email of the patient that consumed the product, `day` and `meal` correspond to the time of consumption.
+
+Json: This request returns a Json like this one
+
+```Json
+[
+  {
+    "barcode": 1001,
+    "name": "Beans",
+    "description": "A serving black beans"
+  },
+  {
+    "barcode": 1002,
+    "name": "Banana",
+    "description": "A unit of this fruit"
+  },
+  {
+    "barcode": 1003,
+    "name": "Beef",
+    "description": "100 mg steak without salt"
+  },
+  {
+    "barcode": 1004,
+    "name": "Coffee",
+    "description": "The drink without milk or sugar"
+  }
+]
+```
+
+Observations: `day` need to have the value of ('Monday', 'Tuesday', 'Wednesday', 'Thursday' or 'Friday'). The allowed values for `mealtime` are 'Breakfast', 'Morning snack', 'Lunch', 'Afternoon snack', 'Diner'.
+
 
 ## Requests RECIPE
 
@@ -781,6 +818,36 @@ Json: This request doesn't have Json.
 Observations: There is no need to specify the recipe number, the backend does that.
 
 Observations: --
+
+### RE.7
+
+Type: GET
+
+Description: Gets the recipes that have not been consumed by the patient.
+
+Url: `/api/Recipe/noconsumption/{patientEmail}/{day}/{meal}` where `patientEmail` is the email of the patient that consumed the product, `day` and `meal` correspond to the time of consumption.
+
+Json: This request returns a Json like this one
+
+```Json
+[
+  {
+    "number": 2,
+    "name": "Fruit salad"
+  },
+  {
+    "number": 3,
+    "name": "Beef and rice"
+  },
+  {
+    "number": 4,
+    "name": "Pinto"
+  }
+]
+```
+
+Observations: `day` need to have the value of ('Monday', 'Tuesday', 'Wednesday', 'Thursday' or 'Friday'). The allowed values for `mealtime` are 'Breakfast', 'Morning snack', 'Lunch', 'Afternoon snack', 'Diner'.
+
 
 ## Requests DAILY PLAN
 

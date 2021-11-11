@@ -76,6 +76,17 @@ namespace Nutritec.Controllers
                 WHERE RH.RecipeNumber = {number}").ToListAsync();
         }
 
+        // Get recipes that have not been consumed at a specific time (RE.7)
+        [HttpGet("noconsumption/{patientEmail}/{day}/{meal}")]
+        public async Task<IEnumerable<NoConsumptionRecipe>> GetNoConsumptionRecipes(string patientEmail, string day, string meal)
+        {
+            // use sql query to get the no consumption products
+            return await _context.NoConsumptionRecipes.FromSqlRaw($@"EXECUTE uspRecipesNotConsumed
+	                                                                @email = '{patientEmail}',
+	                                                                @day = '{day}',
+	                                                                @meal = '{meal}'").ToListAsync();
+        }
+
         // Add product to recipe  (RE.6)
         [HttpPost("newproductinrecipe/{number}/{barcode}/{servings}")]
         public async Task<ActionResult> AddProductInRecipe(int number, int barcode,  int servings)

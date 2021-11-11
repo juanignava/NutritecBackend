@@ -81,6 +81,17 @@ namespace Nutritec.Controllers
                                                                   WHERE Email = '{patientEmail}' AND Day = '{day}' AND Meal = '{meal}'").ToListAsync();
         }
 
+        // Get products that have not been consumed at a specific time (PR.10)
+        [HttpGet("noconsumption/{patientEmail}/{day}/{meal}")]
+        public async Task<IEnumerable<NoConsumptionProduct>> GetNoConsumptionProducts(string patientEmail, string day, string meal)
+        {
+            // use sql query to get the no consumption products
+            return await _context.NoConsumptionProducts.FromSqlRaw($@"EXECUTE uspProductsNotConsumed
+	                                                                @email = '{patientEmail}',
+	                                                                @day = '{day}',
+	                                                                @meal = '{meal}'").ToListAsync();
+        }
+
         // Add product in the list of consumption (PR.9)
         [HttpPost("consumption/addproduct/{barcode}/{patientEmail}/{day}/{meal}/{servings}")]
         public async Task<ActionResult> AddProductToConsumption(int barcode, string patientEmail, string day, string meal, int servings)
