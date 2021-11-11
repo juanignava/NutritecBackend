@@ -4,7 +4,7 @@
 Description: this view joins the tables needed to get the products of an
 specific plan
 
-Used in: PR.5 and PR.6
+Used : PR.5 and PR.6
 */
 CREATE VIEW PLAN_PRODUCT_VIEW
 AS SELECT DP.Number, P.Barcode, P.Name, P.Description, PH.Servings, PH.Mealtime
@@ -298,3 +298,61 @@ BEGIN
 	DROP TABLE #TEMP_RECIPE;
 
 END
+
+GO
+-- triggers  --- 
+
+-- trigger 1 --
+
+CREATE TRIGGER admin_security
+ON ADMIN
+FOR INSERT, DELETE 
+AS	
+	SET NOCOUNT ON;
+	PRINT 'You must disable admin_security trigger before adding or deleting an admin'
+	ROLLBACK;
+
+GO
+
+--- trigger 2 --
+
+CREATE TRIGGER patient_validation
+ON PATIENT
+AFTER INSERT
+AS
+BEGIN
+	SET NOCOUNT ON;
+	DECLARE
+		@email AS VARCHAR(100),
+		@password AS VARCHAR(100);
+	SELECT
+		@email = Email,
+		@password = Passowrd
+	FROM inserted
+
+	IF @email Like '%@%.com'
+	BEGIN
+		IF LEN(@password) = 32
+		PRINT('Patient inserted correctly');
+
+		ELSE
+		BEGIN
+			DELETE FROM PATIENT
+			WHERE Email = @email;
+			
+			PRINT ('Could not insert patient');
+			PRINT ('Patient password must be encrypted with MD5');
+		END
+	END
+	ELSE
+	BEGIN
+		DELETE FROM PATIENT
+		WHERE Email = @email;
+
+		PRINT ('Could not insert patient');
+		PRINT ('Make sure the patient email has the correct sintax');
+	END
+
+END
+
+
