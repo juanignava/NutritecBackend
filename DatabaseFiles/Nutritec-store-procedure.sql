@@ -1,7 +1,10 @@
+
 -- Create Views --
 /*
 Description: this view joins the tables needed to get the products of an
 specific plan
+
+Used in: PR.5 and PR.6
 */
 CREATE VIEW PLAN_PRODUCT_VIEW
 AS SELECT DP.Number, P.Barcode, P.Name, P.Description, PH.Servings, PH.Mealtime
@@ -9,6 +12,12 @@ FROM (DAILY_PLAN AS DP JOIN PLAN_HAS AS PH ON  DP.Number = PH.PlanNumber) JOIN P
 
 GO
 
+/*
+Description: this view joins the tables needed to get the products consumed
+by an specific patient.
+
+Used in: PR.8
+*/
 CREATE VIEW PATIENT_PRODUCTS
 AS SELECT PA.Email, PR.Barcode, PR.Name, CP.Day, CP.Meal
 FROM 
@@ -17,6 +26,12 @@ FROM
 
 GO
 
+/*
+Description: this view joins the tables needed to get the recipes consumed
+by an specific patient.
+
+Used in: PR.8
+*/
 CREATE VIEW PATIENT_RECIPES
 AS SELECT PA.Email, RE.Number, RE.Name, CR.Day, CR.Meal
 FROM 
@@ -93,25 +108,46 @@ Description: This procedure is used to generate the information of the reports
 Input: @type corresponds to the charge type of the nutritionist (weekly, monthly or anual)
 	if @type is null it doesn't filter
 */
-
 CREATE PROCEDURE uspNutritionistReport(
 	@type VARCHAR(100) = NULL
 )
 AS
 BEGIN
 	
+	-- temporal table with the needed values per nutritionist --
+	CREATE TABLE #TEMP_CHARGES
+	(
+		NutritionistEmail		VARCHAR(100),
+		ClientAmount			INT,
+		Discount				FLOAT(2)
+	);
+
+	-- insert the values per nutritionist --
+	INSERT INTO #TEMP_CHARGES (NutritionistEmail, ClientAmount, Discount)
+		SELECT
+			DISTINCT Email,
+			dbo.func_getPatients(Email) AS ClientAmount,
+			dbo.discount(ChargeType) AS Discount
+		FROM NUTRITIONIST
+		WHERE (@type IS NULL OR ChargeType = @type);
+
+	-- response query with the requires data --
 	SELECT 
 		DISTINCT N.Email,
 		N.FirstName,
 		N.LastName1,
 		N.LastName2,
 		N.CreditCardNumber,
-		dbo.func_getPatients(N.Email) AS Payment,
-		dbo.func_getPatients(N.Email)*dbo.discount(N.ChargeType) AS Discount,
-		dbo.func_getPatients(N.Email)-dbo.func_getPatients(N.Email)*dbo.discount(N.ChargeType) AS Amount
-	FROM (NUTRITIONIST AS N LEFT JOIN PATIENT AS P ON N.Email = P.NutritionistEmail)
-	WHERE (@type IS NULL OR N.ChargeType = @type);
+		TP.ClientAmount AS Payment,
+		TP.ClientAmount * TP.Discount AS Discount,
+		TP.ClientAmount - TP.ClientAmount * TP.Discount AS Amount
+	FROM (NUTRITIONIST AS N JOIN #TEMP_CHARGES AS TP ON N.Email = TP.NutritionistEmail);
 
+	-- drop the temporal table --
+	IF(OBJECT_ID('tempdb..#TEMP_CHARGES') IS NOT NULL)
+	BEGIN
+		DROP TABLE #TEMP_CHARGES
+	END
 END
 
 GO
@@ -130,18 +166,47 @@ CREATE PROCEDURE uspPlanDetails(
 AS
 BEGIN
 
-	SELECT
-		DP.Number,
-		ROUND(SUM(P.Sodium*PH.Servings), 2) AS TotalSodium,
-		ROUND(SUM(P.Carbohydrates*PH.Servings), 2) AS TotalCarbohydrates,
-		ROUND(SUM(P.Protein*PH.Servings), 2) AS TotalProtein,
-		ROUND(SUM(P.Fat*PH.Servings), 2) AS TotalFat,
-		ROUND(SUM(P.Iron*PH.Servings), 2) AS TotalIron,
-		ROUND(SUM(P.Calcium*PH.Servings), 2) AS TotalCalcium,
-		ROUND(SUM(P.Calories*PH.Servings), 2) AS TotalCalories
-	FROM ((DAILY_PLAN AS DP JOIN PLAN_HAS AS PH ON DP.Number = PH.PlanNumber) JOIN PRODUCT AS P ON PH.ProductBarcode = P.Barcode)
-	WHERE (@number IS NULL OR DP.Number = @number)
-	GROUP BY DP.Number;
+	-- table that calculates the total values per plan --
+	CREATE TABLE #TEMP_PRODUCTS_DATA
+	(
+		PlanNumber			INT,
+		TotalSodium			FLOAT(2),
+		TotalCarbohydrates	FLOAT(2),
+		TotalProtein		FLOAT(2),
+		TotalFat			FLOAT(2),
+		TotalIron			FLOAT(2),
+		TotalCalcium		FLOAT(2),
+		TotalCalories		FLOAT(2)
+	);
+
+	-- insert the result of the calculations --
+	INSERT INTO #TEMP_PRODUCTS_DATA
+		SELECT
+			PH.PlanNumber AS Number,
+			SUM(P.Sodium*PH.Servings),
+			SUM(P.Carbohydrates*PH.Servings),
+			SUM(P.Protein*PH.Servings),
+			SUM(P.Fat*PH.Servings),
+			SUM(P.Iron*PH.Servings),
+			SUM(P.Calcium*PH.Servings),
+			SUM(P.Calories*PH.Servings)
+		FROM PLAN_HAS AS PH JOIN PRODUCT AS P ON PH.ProductBarcode = P.Barcode
+		
+		GROUP BY PH.PlanNumber;
+
+	-- add the plan number -- (this considers the plans that have no products yet)
+	SELECT DP.Number, TPD.* INTO #TEMP_RESULT
+	FROM DAILY_PLAN AS DP LEFT OUTER JOIN #TEMP_PRODUCTS_DATA AS TPD 
+		ON DP.Number = TPD.PlanNumber
+	WHERE (@number IS NULL OR DP.Number = @number);
+	
+	ALTER TABLE #TEMP_RESULT DROP COLUMN PlanNumber;
+
+	-- response request --
+	SELECT * FROM #TEMP_RESULT;
+
+	-- drop temp tables --
+	DROP TABLE #TEMP_RESULT;
+	DROP TABLE #TEMP_PRODUCTS_DATA
 
 END
-

@@ -851,7 +851,7 @@ Json: You eill receive a Json like this one.
 ]
 ```
 
-Observations: Notice that the request returns the result as an array of Json objects. (Entity framework didn't allow me to do it in the correct way)
+Observations: Notice that the request returns the result as an array of Json objects. (Entity framework didn't allow me to do it in the correct way). Also consider that is a plan has no products the total values will be returned as NULL.
 
 ### DP.4
 

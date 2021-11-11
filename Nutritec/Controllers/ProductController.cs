@@ -65,7 +65,7 @@ namespace Nutritec.Controllers
                                                          WHERE Approved = '{state}'").ToListAsync();
         }
 
-        // Get consumed products and recipes consumed by patient email, consuptoin day and meal
+        // Get consumed products and recipes consumed by patient email, consuptoin day and meal (PR.8)
         [HttpGet("consumption/{patientEmail}/{day}/{meal}")]
         public async Task<IEnumerable<ConsumptionModel>> GetConsumptionDetails(string patientEmail, string day, string meal)
         {
