@@ -304,6 +304,10 @@ GO
 
 -- trigger 1 --
 
+/*
+Description: this trigger disallows the the insertion or deletion of an
+administrator unless the trigger gets disabled.
+*/
 CREATE TRIGGER admin_security
 ON ADMIN
 FOR INSERT, DELETE 
@@ -316,6 +320,10 @@ GO
 
 --- trigger 2 --
 
+/*
+Description: this trigger validates that the patient email has a correct email format
+and also verifies the password is MD5 encrypted by confirming its lenght. 
+*/
 CREATE TRIGGER patient_validation
 ON PATIENT
 AFTER INSERT
@@ -354,5 +362,100 @@ BEGIN
 	END
 
 END
+
+GO
+--- trigger 3 --
+
+/*
+Description: this trigger validates that the admin email has a correct email format
+and also verifies the password is MD5 encrypted by confirming its lenght. 
+*/
+CREATE TRIGGER admin_validation
+ON ADMIN
+AFTER INSERT
+AS
+BEGIN
+	SET NOCOUNT ON;
+	DECLARE
+		@email AS VARCHAR(100),
+		@password AS VARCHAR(100);
+	SELECT
+		@email = Email,
+		@password = Password
+	FROM inserted
+
+	IF @email Like '%@%.com' OR @email Like '%@%.cr'
+	BEGIN
+		IF LEN(@password) = 32
+		PRINT('Administrator inserted correctly');
+
+		ELSE
+		BEGIN
+			DELETE FROM ADMIN
+			WHERE Email = @email;
+			
+			PRINT ('Could not insert administrator');
+			PRINT ('Administrator password must be encrypted with MD5');
+		END
+	END
+	ELSE
+	BEGIN
+		DELETE FROM ADMIN
+		WHERE Email = @email;
+
+		PRINT ('Could not insert administrator');
+		PRINT ('Make sure the administrator email has the correct sintax');
+	END
+
+END
+
+GO
+
+--- trigger 4 --
+
+/*
+Description: this trigger validates that the nutritionist email has a correct email format
+and also verifies the password is MD5 encrypted by confirming its lenght. 
+*/
+CREATE TRIGGER nutritionist_validation
+ON NUTRITIONIST
+AFTER INSERT
+AS
+BEGIN
+	SET NOCOUNT ON;
+	DECLARE
+		@email AS VARCHAR(100),
+		@password AS VARCHAR(100);
+	SELECT
+		@email = Email,
+		@password = Password
+	FROM inserted
+
+	IF @email Like '%@%.com' OR @email Like '%@%.cr'
+	BEGIN
+		IF LEN(@password) = 32
+		PRINT('Nutritionist inserted correctly');
+
+		ELSE
+		BEGIN
+			DELETE FROM NUTRITIONIST
+			WHERE Email = @email;
+			
+			PRINT ('Could not insert nutritionist');
+			PRINT ('Nutritionist password must be encrypted with MD5');
+		END
+	END
+	ELSE
+	BEGIN
+		DELETE FROM NUTRITIONIST
+		WHERE Email = @email;
+
+		PRINT ('Could not insert nutritionist');
+		PRINT ('Make sure the nutritionist email has the correct sintax');
+	END
+
+END
+
+
 
 

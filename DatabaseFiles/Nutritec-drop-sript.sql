@@ -35,3 +35,5 @@ DROP VIEW IF EXISTS PATIENT_RECIPES;
 -- Drop Triggers --
 DROP TRIGGER IF EXISTS admin_security;
 DROP TRIGGER IF EXISTS patient_validation;
+DROP TRIGGER IF EXISTS admin_validation;
+DROP TRIGGER IF EXISTS nutritionist_validation;

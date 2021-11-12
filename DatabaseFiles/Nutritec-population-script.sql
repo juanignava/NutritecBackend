@@ -1,5 +1,7 @@
+DISABLE TRIGGER admin_security ON ADMIN;
 INSERT INTO ADMIN (Email, Username, Password)
 			VALUES		('admin@nutritec.cr', 'admin', '81dc9bdb52d04dc20036dbd8313ed055');
+ENABLE TRIGGER admin_security ON ADMIN;
 
 INSERT INTO NUTRITIONIST(Email, Username, NutritionistCode, Id, Active, FirstName, LastName1, LastName2, BirthDate, Password, ChargeType, Weight, Height, CreditCardNumber, Country, Province, Canton)
 			VALUES		('ju.navarro@gmail.com', 'juanignava', 10000, 118180814, 1, 'Juan', 'Navarro', 'Navarro', '02-08-2001', '81dc9bdb52d04dc20036dbd8313ed055', 'weekly', 60, 1.7, 123456789, 'Costa Rica', 'Cartago', 'Cartago'),
